@@ -1,0 +1,28 @@
+# Local user configuration and generated data
+config.json
+arena_id_lookup.json
+mtga_collection.json
+mtga_collection.csv
+mtga_collection.txt
+mtga_scan_validation.json
+
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Virtual environments
+.venv/
+.venv-win/
+venv/
+
+# Build artifacts
+build/
+dist/
+*.spec
+
+# Local tool/config folders
+.claude/

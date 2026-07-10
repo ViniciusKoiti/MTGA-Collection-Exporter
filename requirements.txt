@@ -1,0 +1,7 @@
+# App desktop + leitura de memória
+customtkinter>=5.2.0
+pymem>=1.13.0
+requests>=2.31.0
+
+# Servidor MCP (opcional — só para a integração com IA)
+mcp[cli]>=1.2.0
