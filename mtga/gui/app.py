@@ -12,6 +12,7 @@ import customtkinter as ctk
 from .. import config as config_mod
 from .. import database as database_mod
 from ..collection import load_exported_collection
+from ..i18n import translate
 from ..pipeline import run_full_scan
 from ..scanner import MtgaNotRunning, ScanError
 from ..validation import export_validation_report, validate_collection
@@ -28,6 +29,7 @@ class App(ctk.CTk, ConfigTabMixin, CollectionTabMixin):
         self.minsize(900, 600)
 
         self.config_obj = config_mod.Config.load()
+        self.language = self.config_obj.language
         self.db: dict = {}
         self.name_to_id: dict = {}
         self.collection: list = []
@@ -46,8 +48,8 @@ class App(ctk.CTk, ConfigTabMixin, CollectionTabMixin):
 
         self.tabs = ctk.CTkTabview(self)
         self.tabs.grid(row=0, column=0, padx=16, pady=(16, 8), sticky="nsew")
-        self.tab_config = self.tabs.add("⚙  Configuração")
-        self.tab_collection = self.tabs.add("▦  Coleção")
+        self.tab_config = self.tabs.add(self._t("tab_config"))
+        self.tab_collection = self.tabs.add(self._t("tab_collection"))
 
         self._build_config_tab()
         self._build_collection_tab()
@@ -62,12 +64,14 @@ class App(ctk.CTk, ConfigTabMixin, CollectionTabMixin):
         self.progress.set(0)
         self.progress.grid(row=0, column=0, padx=12, pady=12, sticky="ew")
 
-        self.lbl_status = ctk.CTkLabel(bottom, text="Pronto.", width=260, anchor="w")
+        self.lbl_status = ctk.CTkLabel(
+            bottom, text=self._t("app_ready"), width=260, anchor="w"
+        )
         self.lbl_status.grid(row=0, column=1, padx=8, pady=12)
 
         self.btn_scan = ctk.CTkButton(
             bottom,
-            text="▶  Escanear Coleção",
+            text=self._t("scan_collection"),
             width=200,
             height=40,
             font=("", 14, "bold"),
@@ -79,9 +83,10 @@ class App(ctk.CTk, ConfigTabMixin, CollectionTabMixin):
     def _load_db_async(self):
         self.db = database_mod.load_card_database(self.config_obj, self._progress_cb)
         self.name_to_id = database_mod.name_to_id_map(self.db)
-        self.after(0, lambda: self._set_status(
-            f"Banco carregado: {len(self.db)} cartas. Pronto para escanear."
-        ))
+        self.after(
+            0,
+            lambda: self._set_status(self._t("db_loaded", count=len(self.db))),
+        )
         self.after(0, lambda: self.progress.set(0))
 
     # --------------------------------------------------------------- scan -----
@@ -91,11 +96,11 @@ class App(ctk.CTk, ConfigTabMixin, CollectionTabMixin):
         self._collect_config()
         self.config_obj.save()
         if not self.config_obj.anchors:
-            self.tabs.set("⚙  Configuração")
-            self._set_status("Adicione ao menos 1 âncora antes de escanear.")
+            self.tabs.set(self._t("tab_config"))
+            self._set_status(self._t("need_anchor"))
             return
         self._scanning = True
-        self.btn_scan.configure(state="disabled", text="Escaneando...")
+        self.btn_scan.configure(state="disabled", text=self._t("scanning"))
         threading.Thread(target=self._scan_worker, daemon=True).start()
 
     def _scan_worker(self):
@@ -116,23 +121,27 @@ class App(ctk.CTk, ConfigTabMixin, CollectionTabMixin):
         except (MtgaNotRunning, ScanError) as e:
             self.after(0, self._on_scan_error, str(e))
         except Exception as e:  # pragma: no cover
-            self.after(0, self._on_scan_error, f"Erro inesperado: {e}")
+            self.after(0, self._on_scan_error, self._t("unexpected_error", error=e))
 
     def _on_scan_done(self, final_list, report):
         self._scanning = False
-        self.btn_scan.configure(state="normal", text="▶  Escanear Coleção")
+        self.btn_scan.configure(state="normal", text=self._t("scan_collection"))
         self.progress.set(1)
         total_cards = sum(i["count"] for i in final_list)
         self._set_status(
-            f"{report.status_label}: {len(final_list)} cartas únicas, "
-            f"{total_cards} no total."
+            self._t(
+                "scan_done",
+                status=self._status_label(report.status),
+                unique=len(final_list),
+                total=total_cards,
+            )
         )
-        self.tabs.set("🃏  Coleção")
+        self.tabs.set(self._t("tab_collection"))
         self._refresh_table()
 
     def _on_scan_error(self, msg):
         self._scanning = False
-        self.btn_scan.configure(state="normal", text="▶  Escanear Coleção")
+        self.btn_scan.configure(state="normal", text=self._t("scan_collection"))
         self.progress.set(0)
         self._set_status(f"⚠ {msg}")
 
@@ -144,6 +153,12 @@ class App(ctk.CTk, ConfigTabMixin, CollectionTabMixin):
 
     def _set_status(self, text):
         self.lbl_status.configure(text=text)
+
+    def _status_label(self, status):
+        return self._t(f"status_{status}")
+
+    def _t(self, key, **kwargs):
+        return translate(self.language, key, **kwargs)
 
 
 def main():

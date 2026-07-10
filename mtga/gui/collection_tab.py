@@ -35,22 +35,22 @@ class CollectionTabMixin:
         bar.grid_columnconfigure(0, weight=1)
 
         self.entry_search = ctk.CTkEntry(
-            bar, placeholder_text="🔍  Buscar por nome, tipo ou set..."
+            bar, placeholder_text=self._t("search_placeholder")
         )
         self.entry_search.grid(row=0, column=0, padx=4, sticky="ew")
         self.entry_search.bind("<KeyRelease>", lambda e: self._refresh_table())
 
         self.filter_rarity = ctk.CTkOptionMenu(
             bar,
-            values=["Todas", "mythic", "rare", "uncommon", "common", "basic"],
+            values=[self._t("all"), "mythic", "rare", "uncommon", "common", "basic"],
             command=lambda _: self._refresh_table(),
             width=130,
         )
-        self.filter_rarity.set("Todas")
+        self.filter_rarity.set(self._t("all"))
         self.filter_rarity.grid(row=0, column=1, padx=4)
 
         ctk.CTkButton(
-            bar, text="📂 Abrir pasta", width=120, command=self._reveal_output
+            bar, text=self._t("open_folder"), width=120, command=self._reveal_output
         ).grid(row=0, column=2, padx=4)
 
         table_frame = ctk.CTkFrame(t)
@@ -64,13 +64,13 @@ class CollectionTabMixin:
             table_frame, columns=cols, show="headings", style="Mtga.Treeview"
         )
         headers = {
-            "count": ("Qtd", 55),
-            "name": ("Nome", 300),
-            "set": ("Set", 70),
-            "cn": ("Nº", 60),
-            "rarity": ("Raridade", 100),
-            "colors": ("Cores", 120),
-            "type": ("Tipo", 220),
+            "count": (self._t("count_header"), 55),
+            "name": (self._t("name_header"), 300),
+            "set": (self._t("set_header"), 70),
+            "cn": (self._t("collector_header"), 60),
+            "rarity": (self._t("rarity_header"), 100),
+            "colors": (self._t("colors_header"), 120),
+            "type": (self._t("type_header"), 220),
         }
         for col, (label, width) in headers.items():
             self.tree.heading(col, text=label)
@@ -83,7 +83,7 @@ class CollectionTabMixin:
         self.tree.configure(yscrollcommand=vsb.set)
 
         self.lbl_summary = ctk.CTkLabel(
-            t, text="Nenhuma coleção carregada ainda.", font=("", 12)
+            t, text=self._t("no_collection"), font=("", 12)
         )
         self.lbl_summary.grid(row=2, column=0, padx=12, pady=(0, 2), sticky="w")
 
@@ -133,8 +133,12 @@ class CollectionTabMixin:
             self.tree.tag_configure(r or "common", foreground=col)
 
         self.lbl_summary.configure(
-            text=f"Exibindo {shown} cartas ({total} cópias)"
-            + (f" · filtro: {rarity_filter}" if rarity_filter != "Todas" else "")
+            text=self._t("showing_cards", shown=shown, total=total)
+            + (
+                self._t("filter_suffix", filter=rarity_filter)
+                if rarity_filter != self._t("all")
+                else ""
+            )
         )
         self._refresh_validation_summary()
 
@@ -147,12 +151,20 @@ class CollectionTabMixin:
         suffix = ""
         if report.issues:
             suffix = " · " + " | ".join(issue.message for issue in report.issues[:2])
-        self.lbl_validation.configure(text=report.summary + suffix)
+        self.lbl_validation.configure(
+            text=self._t(
+                "validation_summary",
+                status=self._status_label(report.status),
+                unique=report.unique_cards,
+                total=report.total_copies,
+            )
+            + suffix
+        )
 
     def _matches_table_filters(
         self, card: dict, query: str, rarity_filter: str
     ) -> bool:
-        if rarity_filter != "Todas" and card.get("rarity", "") != rarity_filter:
+        if rarity_filter != self._t("all") and card.get("rarity", "") != rarity_filter:
             return False
         if not query:
             return True
@@ -176,4 +188,4 @@ class CollectionTabMixin:
             else:
                 subprocess.Popen(["xdg-open", str(folder)])
         except Exception:
-            self._set_status(f"Pasta: {folder}")
+            self._set_status(self._t("folder_status", folder=folder))

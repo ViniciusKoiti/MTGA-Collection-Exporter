@@ -8,6 +8,38 @@ disponibiliza de duas formas:
 - 🤖 **Servidor MCP** — deixa uma IA (Claude) acessar sua coleção para ajudar
   a montar decks só com o que você tem.
 
+## English quick start
+
+MTGA Collection Exporter reads your **MTG Arena** collection from game memory
+and exports it as JSON, CSV and TXT. It also exposes an optional MCP server so
+an AI assistant can inspect your exported collection.
+
+Install dependencies:
+
+```bash
+pip install -r requirements.txt
+```
+
+Run the desktop app:
+
+```bash
+python run_gui.py
+```
+
+In the **Settings** tab:
+
+1. Select or auto-detect the MTGA `Raw` folder.
+2. Choose an output folder.
+3. Set the card database source to `auto`.
+4. Choose **Language: English** if you want the GUI in English.
+5. Add 3-5 calibration anchors: rare/mythic cards you own with exact quantity.
+6. Save settings and restart the app if you changed the language.
+7. Open MTG Arena on the **Decks** screen.
+8. Click **Scan Collection**.
+
+The app writes `mtga_collection.json`, `mtga_collection.csv`,
+`mtga_collection.txt`, and `mtga_scan_validation.json` to the output folder.
+
 ## Arquitetura
 
 Pacote `mtga/` com módulos pequenos e focados; duas "frentes" (GUI e MCP)
@@ -50,11 +82,13 @@ python run_gui.py
 1. Aba **Configuração**: defina a pasta `Raw` do MTGA (ou clique em *Detectar*),
    a pasta de saída, a fonte do banco de cartas e as **âncoras de calibração**
    (3–5 cartas raras/míticas que você possui, com a quantidade exata).
-2. Clique em **Salvar configuração**.
-3. Com o MTG Arena aberto na aba *Decks*, clique em **▶ Escanear Coleção**.
-4. Veja as cartas na aba **Coleção** (busca + filtro por raridade). Os arquivos
+2. Se quiser a interface em inglês, selecione **Idioma: English**, clique em
+   **Salvar configuração** e reinicie o app.
+3. Clique em **Salvar configuração**.
+4. Com o MTG Arena aberto na aba *Decks*, clique em **▶ Escanear Coleção**.
+5. Veja as cartas na aba **Coleção** (busca + filtro por raridade). Os arquivos
    `mtga_collection.{txt,json,csv}` são gravados na pasta de saída.
-5. Ao final do scan, o app mostra um status de validação (`OK`, `Atencao` ou
+6. Ao final do scan, o app mostra um status de validação (`OK`, `Atencao` ou
    `Erro`) e grava `mtga_scan_validation.json` com os detalhes.
 
 Tudo fica salvo em `config.json`, então nas próximas vezes é só abrir e escanear.

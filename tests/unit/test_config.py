@@ -37,9 +37,21 @@ def test_config_save_and_load_round_trip(tmp_path, monkeypatch):
         "mtga_path": "C:/MTGA/Raw",
         "output_folder": str(tmp_path),
         "database_source": "scryfall",
+        "language": "pt",
         "anchors": [[1, 4, "Opt"]],
     }
     assert Config.load() == saved
+
+
+def test_config_load_normalizes_language(tmp_path, monkeypatch):
+    config_file = tmp_path / "config.json"
+    config_file.write_text(
+        json.dumps({"language": "English"}),
+        encoding="utf-8",
+    )
+    monkeypatch.setattr(config, "CONFIG_FILE", config_file)
+
+    assert Config.load().language == "en"
 
 
 def test_resolve_paths_use_existing_configured_folders(tmp_path):

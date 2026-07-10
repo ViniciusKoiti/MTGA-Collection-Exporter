@@ -10,6 +10,8 @@ from dataclasses import asdict, dataclass, field
 from pathlib import Path
 from typing import Callable, Optional
 
+from .i18n import DEFAULT_LANGUAGE, normalize_language
+
 # ---------------------------------------------------------------------------
 # Caminhos base
 # ---------------------------------------------------------------------------
@@ -60,6 +62,7 @@ class Config:
     mtga_path: str = ""            # pasta "Raw"; vazio = detectar automaticamente
     output_folder: str = ""        # vazio = usar SCRIPT_DIR
     database_source: str = "auto"  # "auto" | "local" | "scryfall"
+    language: str = DEFAULT_LANGUAGE
     # Cada âncora é [grp_id, quantidade, nome_exibicao]
     anchors: list = field(default_factory=list)
 
@@ -72,6 +75,9 @@ class Config:
                     mtga_path=data.get("mtga_path", ""),
                     output_folder=data.get("output_folder", ""),
                     database_source=data.get("database_source", "auto"),
+                    language=normalize_language(
+                        data.get("language", DEFAULT_LANGUAGE)
+                    ),
                     anchors=data.get("anchors", []),
                 )
             except Exception:
