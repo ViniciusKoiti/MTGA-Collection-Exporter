@@ -33,7 +33,7 @@ In the **Settings** tab:
 3. Set the card database source to `auto`.
 4. Choose **Language: English** if you want the GUI in English.
 5. Add 3-5 calibration anchors: rare/mythic cards you own with exact quantity.
-6. Save settings and restart the app if you changed the language.
+6. Save settings. Language changes are applied immediately.
 7. Open MTG Arena on the **Decks** screen.
 8. Click **Scan Collection**.
 
@@ -82,8 +82,8 @@ python run_gui.py
 1. Aba **Configuração**: defina a pasta `Raw` do MTGA (ou clique em *Detectar*),
    a pasta de saída, a fonte do banco de cartas e as **âncoras de calibração**
    (3–5 cartas raras/míticas que você possui, com a quantidade exata).
-2. Se quiser a interface em inglês, selecione **Idioma: English**, clique em
-   **Salvar configuração** e reinicie o app.
+2. Se quiser a interface em inglês, selecione **Idioma: English**. A mudança é
+   aplicada imediatamente.
 3. Clique em **Salvar configuração**.
 4. Com o MTG Arena aberto na aba *Decks*, clique em **▶ Escanear Coleção**.
 5. Veja as cartas na aba **Coleção** (busca + filtro por raridade). Os arquivos

@@ -86,6 +86,7 @@ class ConfigTabMixin:
             values=list(LANGUAGE_LABELS.values()),
             variable=self.language_var,
             width=160,
+            command=self._change_language,
         ).grid(row=4, column=1, padx=6, pady=(0, 12), sticky="w")
         ctk.CTkLabel(
             paths,
@@ -286,8 +287,12 @@ class ConfigTabMixin:
 
     def _save_config(self):
         self._collect_config()
+        self.language = self.config_obj.language
         self.config_obj.save()
         self._set_status(self._t("config_saved"))
+
+    def _change_language(self, label):
+        self._apply_language(normalize_language(label))
 
     def _browse_mtga(self):
         d = filedialog.askdirectory(title=self._t("select_mtga_raw"))

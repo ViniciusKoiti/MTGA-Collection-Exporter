@@ -29,7 +29,7 @@ _TEXTS = {
         "output_placeholder": "vazio = pasta do programa",
         "database_source": "Fonte do banco de cartas:",
         "language": "Idioma:",
-        "language_restart_note": "Salve e reinicie o app para aplicar o idioma.",
+        "language_restart_note": "A troca de idioma e aplicada imediatamente.",
         "anchors_title": "Âncoras de calibração",
         "anchors_help": (
             "Cartas raras/míticas que você possui, usadas para localizar a "
@@ -97,7 +97,7 @@ _TEXTS = {
         "output_placeholder": "empty = application folder",
         "database_source": "Card database source:",
         "language": "Language:",
-        "language_restart_note": "Save and restart the app to apply the language.",
+        "language_restart_note": "Language changes are applied immediately.",
         "anchors_title": "Calibration anchors",
         "anchors_help": (
             "Rare/mythic cards you own, used to locate the collection in "

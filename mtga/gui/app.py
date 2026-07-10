@@ -48,12 +48,15 @@ class App(ctk.CTk, ConfigTabMixin, CollectionTabMixin):
 
         self.tabs = ctk.CTkTabview(self)
         self.tabs.grid(row=0, column=0, padx=16, pady=(16, 8), sticky="nsew")
+        self._build_tabs()
+        self._build_bottom_bar()
+
+    def _build_tabs(self):
         self.tab_config = self.tabs.add(self._t("tab_config"))
         self.tab_collection = self.tabs.add(self._t("tab_collection"))
 
         self._build_config_tab()
         self._build_collection_tab()
-        self._build_bottom_bar()
 
     def _build_bottom_bar(self):
         bottom = ctk.CTkFrame(self)
@@ -153,6 +156,20 @@ class App(ctk.CTk, ConfigTabMixin, CollectionTabMixin):
 
     def _set_status(self, text):
         self.lbl_status.configure(text=text)
+
+    def _apply_language(self, language):
+        self._collect_config()
+        self.language = language
+        self.config_obj.language = language
+        self.config_obj.save()
+        self.tabs.destroy()
+        self.tabs = ctk.CTkTabview(self)
+        self.tabs.grid(row=0, column=0, padx=16, pady=(16, 8), sticky="nsew")
+        self._build_tabs()
+        self._load_config_into_ui()
+        self._refresh_table()
+        self.lbl_status.configure(text=self._t("config_saved"))
+        self.btn_scan.configure(text=self._t("scan_collection"))
 
     def _status_label(self, status):
         return self._t(f"status_{status}")
