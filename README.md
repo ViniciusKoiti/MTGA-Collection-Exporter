@@ -137,6 +137,24 @@ pip install pyinstaller
 pyinstaller --onefile --windowed --name "MTGA Exporter" run_gui.py
 ```
 
+Para gerar o `.zip` localmente no Windows:
+
+```powershell
+.\scripts\package_windows.ps1 -Clean
+```
+
+O pacote final fica em:
+
+```text
+dist\MTGA-Exporter-windows.zip
+```
+
+Também existe uma pipeline GitHub Actions em
+`.github/workflows/windows-package.yml`. Ela roda lint, testes, gera o
+executável Windows, compacta `MTGA Exporter.exe` com o `README.md` e publica o
+zip como artifact. Ao criar uma tag `v*`, por exemplo `v0.1.0`, a pipeline
+também cria ou atualiza o GitHub Release com esse zip anexado.
+
 ## Observações
 
 - A **fonte do banco** pode ser `local` (arquivos `.mtga` do jogo), `scryfall`
