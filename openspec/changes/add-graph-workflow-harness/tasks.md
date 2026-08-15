@@ -59,7 +59,7 @@
 
 ## 7. Development MCP
 
-- [ ] 7.1 Add a separate stdio `dev-mcp` command and exclude it from every product packaging manifest.
+- [x] 7.1 Add a separate stdio `dev-mcp` command and exclude it from every product packaging manifest.
 - [x] 7.2 Implement pre-connection environment classification that denies production and ambiguous hosts, DSNs, certificates, and markers.
 - [ ] 7.3 Expose only graph listing, scenario execution, run timeline, event validation, and fixture diagnostic tools.
 - [ ] 7.4 Enforce read-only inspection by default and a separate scenario-execute capability restricted to isolated namespaces.
