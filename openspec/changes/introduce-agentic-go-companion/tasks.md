@@ -61,7 +61,7 @@
 ## 7. Migration, Packaging, And Release Verification
 
 - [x] 7.1 Add telemetry-free structured local logs for sync and tool calls plus a redacted diagnostic-bundle exporter with explicit opt-in fields.
-- [ ] 7.2 Add migration backup, forward migration, and export-based recovery tests for the local database.
+- [x] 7.2 Add migration backup, forward migration, and export-based recovery tests for the local database.
 - [ ] 7.3 Run fixture, unit, contract, race, frontend, accessibility, and end-to-end suites in CI without MTGA, network, administrator privileges, or an LLM.
 - [ ] 7.4 Build and smoke-test the Go desktop on a clean Windows environment, including offline startup and WebView dependency handling, and prove no development MCP is packaged.
 - [ ] 7.5 Execute a multi-snapshot parity trial between accepted Detailed Logs, the Python exporter, and Go normalization before enabling log sync by default.
