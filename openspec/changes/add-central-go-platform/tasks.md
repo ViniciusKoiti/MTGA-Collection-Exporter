@@ -17,8 +17,8 @@
 
 ## 3. HTTP API
 
-- [ ] 3.1 Implement `net/http` server lifecycle with header, request, idle, shutdown, body, decompression, response, and concurrency limits.
-- [ ] 3.2 Add request ID, recovery, strict JSON, authentication, authorization, rate policy, observability, and stable error middleware.
+- [x] 3.1 Implement `net/http` server lifecycle with header, request, idle, shutdown, body, decompression, response, and concurrency limits.
+- [x] 3.2 Add request ID, recovery, strict JSON, authentication, authorization, rate policy, observability, and stable error middleware.
 - [ ] 3.3 Implement public manifest and compatibility endpoints with ETag, immutable cache, bounded in-process cache, and singleflight.
 - [ ] 3.4 Implement installation enrollment, token hashing, consent receipt, credential rotation, revocation, and deletion endpoints.
 - [ ] 3.5 Implement telemetry batch ingestion with atomic schema validation, installation scope, idempotency, sequence, and admission control.
