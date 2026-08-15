@@ -56,7 +56,7 @@
 - [x] 6.6 Add explicit negative tests proving that memory access, synthetic input, gameplay, purchase, account, credential, shell, and unrestricted filesystem tools are absent or denied.
 - [x] 6.7 Implement a provider-neutral context builder that excludes raw logs, local paths, credentials, and unrelated collection data, with snapshot tests for redaction.
 - [x] 6.8 Add the disabled-by-default in-app Assistant shell and a fake model adapter; defer production provider adapters until provider and data-residency decisions are recorded.
-- [ ] 6.9 Add compatibility tests that compare legacy Python MCP results with Go application read services over the same collection and deck fixtures.
+- [x] 6.9 Add compatibility tests that compare legacy Python MCP results with Go application read services over the same collection and deck fixtures.
 
 ## 7. Migration, Packaging, And Release Verification
 

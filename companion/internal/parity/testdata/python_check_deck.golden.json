@@ -1,0 +1,19 @@
+{
+  "buildable": false,
+  "missing": [
+    {
+      "have": 0,
+      "name": "Carta Inexistente",
+      "need": 2,
+      "want": 2
+    }
+  ],
+  "missing_count": 2,
+  "owned": [
+    {
+      "have": 6,
+      "name": "Lightning Strike",
+      "want": 4
+    }
+  ]
+}
