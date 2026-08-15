@@ -51,7 +51,7 @@
 - [x] 6.3 Implement pipeline helpers using `errgroup.WithContext`, explicit limits, bounded channels, sender cancellation, and deterministic reducers.
 - [x] 6.4 Add a concurrency registry documenting owner, parent context, limit source, downstream budget, result path, and shutdown behavior for every goroutine site.
 - [x] 6.5 Prohibit detached handler work, goroutine-per-record inserts, unbounded channels, model-selected concurrency, and hidden background loops with architecture tests.
-- [ ] 6.6 Add race, leak, blocked-sender, slow-consumer, cancellation, worker-death, lease-expiry, duplicate-effect, and 24-hour soak tests.
+- [ ] 6.6 Add race, leak, blocked-sender, slow-consumer, cancellation, worker-death, lease-expiry, duplicate-effect, and 24-hour soak tests. (All automated proofs landed — race in CI, blocked-sender/slow-consumer bound, worker-death/lease-expiry/duplicate-effect fencing in containers; OPEN only for the 24-hour soak, which needs a long-lived environment.)
 
 ## 7. Operations And Governance
 
