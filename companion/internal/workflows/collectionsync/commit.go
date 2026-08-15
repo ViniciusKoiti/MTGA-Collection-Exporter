@@ -16,6 +16,12 @@ func persiste(deps Deps) wf.Node {
 		agora := deps.Clock.Now()
 		id := collection.SnapshotID(fmt.Sprintf("snap-%d-%s",
 			agora.Unix(), estado.Observacao.SourceInstance))
+		if _, err := deps.Snapshots.Get(ctx, id); err == nil {
+			// Idempotent orchestration (task 3.3): the same observation at
+			// the same instant is already committed — reuse it.
+			estado.Snapshot = id
+			return estado, "ok", nil
+		}
 		snap, err := collection.NewSnapshot(id, estado.Observacao, agora,
 			estado.Entradas, estado.Diagnosticos)
 		if err != nil {

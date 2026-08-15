@@ -18,7 +18,7 @@
 
 - [x] 3.1 Implement the legacy JSON source adapter and golden contract tests against Python exports.
 - [ ] 3.2 Implement normalization that preserves unresolved source records and attaches catalog provenance and diagnostics.
-- [ ] 3.3 Implement idempotent snapshot orchestration and the `not_configured`, `ready`, `watching`, `syncing`, `fresh`, `stale`, and `error` state transitions.
+- [x] 3.3 Implement idempotent snapshot orchestration and the `not_configured`, `ready`, `watching`, `syncing`, `fresh`, `stale`, and `error` state transitions.
 - [x] 3.4 Implement the selected SQLite adapter with embedded migrations, transactional snapshot writes, and repository integration tests.
 - [ ] 3.5 Implement atomic compatibility JSON, CSV, and text projections and verify the existing MCP consumer can parse the generated JSON.
 - [ ] 3.6 Implement Scryfall bulk-data caching with explicit version/freshness metadata, bounded retries, timeouts, and offline fallback tests.

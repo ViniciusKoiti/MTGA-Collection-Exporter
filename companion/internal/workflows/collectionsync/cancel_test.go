@@ -10,6 +10,25 @@ import (
 	wf "github.com/ViniciusKoiti/MTGA-Collection-Exporter/companion/internal/workflow"
 )
 
+// TestRepetirMesmaObservacaoEhIdempotente: same observation at the same
+// controlled instant reuses the committed snapshot (task 3.3).
+func TestRepetirMesmaObservacaoEhIdempotente(t *testing.T) {
+	sc, snapshots := ambiente(t, fonte([]collection.ObservedQuantity{
+		{RawIdentity: "101", Arena: 101, Quantity: 4},
+	}, nil))
+	primeira := executa(t, sc)
+	segunda := executa(t, sc) // mesmo cenário, mesma seed, mesmo store
+	if segunda.Err != nil || segunda.Run.Status != wf.RunSucceeded {
+		t.Fatalf("re-execução deveria ser idempotente: %v / %+v", segunda.Err, segunda.Run)
+	}
+	if primeira.Run.State.(Estado).Snapshot != segunda.Run.State.(Estado).Snapshot {
+		t.Fatal("mesma observação deve reutilizar o mesmo snapshot")
+	}
+	if snap, existe, _ := snapshots.Latest(t.Context()); !existe || snap.TotalCartas() != 4 {
+		t.Fatalf("snapshot único esperado: %+v", snap)
+	}
+}
+
 // TestCancelamentoEncerraSemCommit cobre o caminho golden de cancelamento
 // (tarefa 4.7): o run termina como cancelled com outcome estável e o
 // snapshot autoritativo permanece intocado.
