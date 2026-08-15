@@ -51,7 +51,7 @@
 - [x] 6.1 Implement the typed tool registry with JSON schemas, argument limits, bounded result pagination, cancellation, and correlation IDs.
 - [ ] 6.2 Implement default-deny policy classification, exact argument-bound approval tokens, expiration, single-use execution, and denial tests.
 - [x] 6.3 Implement redacted audit storage and an Assistant activity view for requested, approved, executed, failed, and denied tools.
-- [ ] 6.4 Expose read tools for sync status, collection summary/search, card lookup, deck validation, and ownership gaps to the in-app assistant and development harness without shipping a product MCP.
+- [x] 6.4 Expose read tools for sync status, collection summary/search, card lookup, deck validation, and ownership gaps to the in-app assistant and development harness without shipping a product MCP.
 - [ ] 6.5 Expose preview-only proposals for save, sync, file export, and clipboard export, requiring approval before execution.
 - [x] 6.6 Add explicit negative tests proving that memory access, synthetic input, gameplay, purchase, account, credential, shell, and unrestricted filesystem tools are absent or denied.
 - [x] 6.7 Implement a provider-neutral context builder that excludes raw logs, local paths, credentials, and unrelated collection data, with snapshot tests for redaction.
