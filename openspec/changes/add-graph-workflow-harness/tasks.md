@@ -1,8 +1,8 @@
 ## 1. Architecture Prerequisites
 
-- [ ] 1.1 Revise the companion change so its new MCP is development-only and the current Python MCP is documented as legacy compatibility.
+- [x] 1.1 Revise the companion change so its new MCP is development-only and the current Python MCP is documented as legacy compatibility.
 - [ ] 1.2 Verify the companion Go domain, application, policy, and storage ports exist before adding workflow adapters.
-- [ ] 1.3 Create an activity inventory mapping every external command and scheduled job to a graph kind or a documented pure-query exemption.
+- [x] 1.3 Create an activity inventory mapping every external command and scheduled job to a graph kind or a documented pure-query exemption.
 - [x] 1.4 Add package dependency tests that keep workflow definitions independent from Wails, SQLite, PostgreSQL, MCP, and model SDKs.
 
 ## 2. Graph Runtime Contracts
@@ -13,7 +13,7 @@
 - [x] 2.4 Enforce step, tool-call, repeated-call, payload-size, active-deadline, and cancellation limits with stable outcomes.
 - [x] 2.5 Integrate the policy and approval ports so exact effect previews pause and resume a run safely.
 - [x] 2.6 Add in-memory run, approval, outbox, clock, and ID adapters for runtime unit tests.
-- [ ] 2.7 Add an activity registry and architecture test that rejects external commands or jobs which bypass a graph.
+- [x] 2.7 Add an activity registry and architecture test that rejects external commands or jobs which bypass a graph.
 - [x] 2.8 Add table-driven and race tests for valid graphs, invalid definitions, policy rejection, limits, cancellation, and concurrency.
 
 ## 3. Persistence And Recovery
@@ -24,7 +24,7 @@
 - [x] 3.4 Implement idempotent effect dispatch and acknowledgement around every pre- and post-effect crash point.
 - [x] 3.5 Create a reusable run-store contract suite and execute it against in-memory and SQLite adapters.
 - [ ] 3.6 Add a development/staging PostgreSQL run-store adapter and pass the same contract suite with Testcontainers.
-- [ ] 3.7 Add migration, backup, rollback, corrupt-checkpoint, dual-worker, and crash-recovery integration tests.
+- [x] 3.7 Add migration, backup, rollback, corrupt-checkpoint, dual-worker, and crash-recovery integration tests.
 
 ## 4. Application Workflow Graphs
 
@@ -39,10 +39,10 @@
 ## 5. Programmatic Development Harness
 
 - [x] 5.1 Define versioned Go and JSON scenario schemas with strict unknown-field, size, and fixture validation.
-- [ ] 5.2 Build the harness composition profile around the production engine, registry, nodes, migrations, and activity entry points.
+- [x] 5.2 Build the harness composition profile around the production engine, registry, nodes, migrations, and activity entry points.
 - [ ] 5.3 Implement controlled clock, ID, planner, provider, process, central API, and effect adapters through production ports.
 - [x] 5.4 Implement latency, timeout, malformed-response, disconnect, and checkpoint-crash fault decorators.
-- [ ] 5.5 Implement ordered transition, outcome, attempt, effect, budget, database, redaction, and forbidden-behavior assertions.
+- [x] 5.5 Implement ordered transition, outcome, attempt, effect, budget, database, redaction, and forbidden-behavior assertions.
 - [ ] 5.6 Add sanitized small, large, malformed, duplicate-printing, unknown-card, and nearly-buildable-deck fixtures.
 - [ ] 5.7 Enforce deterministic, integration, end-to-end, staging, and provider-smoke trust profiles and network allowlists.
 - [x] 5.8 Add repeatability tests proving identical normalized evidence for the same deterministic scenario and seed.

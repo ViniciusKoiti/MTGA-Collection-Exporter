@@ -3,6 +3,7 @@ package testkit
 import (
 	"time"
 
+	"github.com/ViniciusKoiti/MTGA-Collection-Exporter/companion/internal/activity"
 	wf "github.com/ViniciusKoiti/MTGA-Collection-Exporter/companion/internal/workflow"
 	"github.com/ViniciusKoiti/MTGA-Collection-Exporter/companion/internal/workflow/memory"
 )
@@ -29,4 +30,12 @@ type Scenario struct {
 	// DecorarStore envolve o run store de produção com decoradores de
 	// falha (ex.: CrashAposCheckpoints); nil mantém o store puro.
 	DecorarStore func(wf.RunStore) wf.RunStore
+	// CaminhoBanco, quando definido, troca o store in-memory pelo SQLite
+	// de produção (migrações aplicadas na composição — perfil da 5.2).
+	CaminhoBanco string
+	// Atividade, quando definida, executa via activity.Launcher (entry
+	// point de produção) em vez de chamar o engine diretamente.
+	Atividade string
+	// Inventario é obrigatório quando Atividade é usada.
+	Inventario *activity.Registry
 }
