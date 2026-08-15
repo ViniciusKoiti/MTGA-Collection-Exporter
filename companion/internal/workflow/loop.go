@@ -75,7 +75,11 @@ func (e *Engine) executaNo(
 func (e *Engine) desfecho(ctx context.Context, run Run, alvo Target, err error) (Run, error) {
 	switch {
 	case err == nil:
-		return e.finish(ctx, run, RunSucceeded, alvo.Terminal, nil)
+		status := RunSucceeded
+		if alvo.Falha {
+			status = RunFailed
+		}
+		return e.finish(ctx, run, status, alvo.Terminal, nil)
 	case errors.Is(err, ErrApprovalPending):
 		return e.finish(ctx, run, RunWaiting, "", err)
 	case errors.Is(err, ErrPolicyDenied):

@@ -14,11 +14,14 @@ type Node interface {
 	Execute(ctx context.Context, st State) (State, OutcomeCode, error)
 }
 
-// Target é o destino de uma transição: exatamente um dos campos é preenchido.
-// Next aponta o próximo nó; Terminal encerra o run com o outcome dado.
+// Target é o destino de uma transição: exatamente um de Next/Terminal é
+// preenchido. Terminal encerra o run com o outcome dado; Falha marca o
+// desfecho terminal como falha de negócio (status failed) em vez de
+// sucesso — a distinção é declarada no grafo, nunca decidida pelo nó.
 type Target struct {
 	Next     NodeID
 	Terminal OutcomeCode
+	Falha    bool
 }
 
 // EhTerminal informa se o alvo encerra o run.
