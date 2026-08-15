@@ -41,7 +41,7 @@
 - [ ] 5.1 Define versioned Go and JSON scenario schemas with strict unknown-field, size, and fixture validation.
 - [ ] 5.2 Build the harness composition profile around the production engine, registry, nodes, migrations, and activity entry points.
 - [ ] 5.3 Implement controlled clock, ID, planner, provider, process, central API, and effect adapters through production ports.
-- [ ] 5.4 Implement latency, timeout, malformed-response, disconnect, and checkpoint-crash fault decorators.
+- [x] 5.4 Implement latency, timeout, malformed-response, disconnect, and checkpoint-crash fault decorators.
 - [ ] 5.5 Implement ordered transition, outcome, attempt, effect, budget, database, redaction, and forbidden-behavior assertions.
 - [ ] 5.6 Add sanitized small, large, malformed, duplicate-printing, unknown-card, and nearly-buildable-deck fixtures.
 - [ ] 5.7 Enforce deterministic, integration, end-to-end, staging, and provider-smoke trust profiles and network allowlists.
