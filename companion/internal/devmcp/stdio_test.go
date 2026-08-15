@@ -27,9 +27,10 @@ func serveLines(t *testing.T, lines ...string) []map[string]any {
 	return responses
 }
 
-// TestStdioServerAnswersTheHandshakeWithNoTools: initialize works and
-// the tool surface is empty until task 7.3 mounts inspection tools.
-func TestStdioServerAnswersTheHandshakeWithNoTools(t *testing.T) {
+// TestStdioServerExposesExactlyTheFiveInspectionTools: initialize
+// works and tools/list names the closed surface of task 7.3 — nothing
+// more, nothing less.
+func TestStdioServerExposesExactlyTheFiveInspectionTools(t *testing.T) {
 	responses := serveLines(t,
 		`{"jsonrpc":"2.0","id":1,"method":"initialize"}`,
 		`{"jsonrpc":"2.0","id":2,"method":"tools/list"}`)
@@ -41,8 +42,15 @@ func TestStdioServerAnswersTheHandshakeWithNoTools(t *testing.T) {
 		t.Fatalf("handshake must identify the dev server: %v", info)
 	}
 	tools := responses[1]["result"].(map[string]any)["tools"].([]any)
-	if len(tools) != 0 {
-		t.Fatalf("the tool surface must stay empty for now: %v", tools)
+	want := []string{"graphs_list", "scenario_execute", "run_timeline",
+		"events_validate", "fixtures_diagnose"}
+	if len(tools) != len(want) {
+		t.Fatalf("the tool surface must be exactly five: %v", tools)
+	}
+	for i, tool := range tools {
+		if tool.(map[string]any)["name"] != want[i] {
+			t.Fatalf("tool %d must be %s: %v", i, want[i], tool)
+		}
 	}
 }
 
