@@ -21,7 +21,7 @@
 - [x] 3.3 Implement idempotent snapshot orchestration and the `not_configured`, `ready`, `watching`, `syncing`, `fresh`, `stale`, and `error` state transitions.
 - [x] 3.4 Implement the selected SQLite adapter with embedded migrations, transactional snapshot writes, and repository integration tests.
 - [x] 3.5 Implement atomic compatibility JSON, CSV, and text projections and verify the existing MCP consumer can parse the generated JSON.
-- [ ] 3.6 Implement Scryfall bulk-data caching with explicit version/freshness metadata, bounded retries, timeouts, and offline fallback tests.
+- [x] 3.6 Implement Scryfall bulk-data caching with explicit version/freshness metadata, bounded retries, timeouts, and offline fallback tests.
 - [ ] 3.7 Implement the Detailed Logs parser and incremental watcher behind a disabled-by-default feature flag using only accepted fixtures.
 - [x] 3.8 Implement Windows log-path and MTGA-process presence detection without opening the process for memory access.
 - [ ] 3.9 Implement the isolated legacy Python scanner bridge as an explicit compatibility command, excluding it from agent tools.
