@@ -1,0 +1,41 @@
+[
+  {
+    "count": 4,
+    "name": "Lightning Strike",
+    "set": "DMU",
+    "collector_number": "137",
+    "rarity": "uncommon",
+    "colors": ["R"],
+    "type_line": "Instant",
+    "mana_cost": "{1}{R}",
+    "cmc": 2.0,
+    "image": "",
+    "grp_id": 82183
+  },
+  {
+    "count": 2,
+    "name": "Lightning Strike",
+    "set": "M21",
+    "collector_number": "88",
+    "rarity": "uncommon",
+    "colors": ["R"],
+    "type_line": "Instant",
+    "mana_cost": "{1}{R}",
+    "cmc": 2.0,
+    "image": "",
+    "grp_id": 71234
+  },
+  {
+    "count": 1,
+    "name": "Carta Misteriosa Do Futuro",
+    "set": "",
+    "collector_number": "",
+    "rarity": "",
+    "colors": [],
+    "type_line": "",
+    "mana_cost": "",
+    "cmc": null,
+    "image": "",
+    "grp_id": 0
+  }
+]
