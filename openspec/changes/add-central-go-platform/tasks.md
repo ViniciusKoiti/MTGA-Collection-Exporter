@@ -28,7 +28,7 @@
 ## 4. Catalog Publication
 
 - [x] 4.1 Implement approved provider registry, adapter contracts, usage-rights checks, rate limits, and rapid disablement.
-- [ ] 4.2 Implement streaming fetch, decode, normalize, validate, quarantine, and bounded batch persistence stages.
+- [x] 4.2 Implement streaming fetch, decode, normalize, validate, quarantine, and bounded batch persistence stages.
 - [ ] 4.3 Add S3-compatible object storage with immutable keys, compression, SHA-256, upload verification, and cleanup.
 - [x] 4.4 Add Ed25519 manifest signing, key IDs, trusted-key rotation, dual-sign transition, and revocation tests.
 - [ ] 4.5 Implement staged publication and atomic current-manifest activation with previous-snapshot fallback.
