@@ -30,7 +30,7 @@
 
 - [x] 4.1 Implement `collection-sync` from source detection through validation, snapshot commit, and compatibility projections.
 - [ ] 4.2 Implement `meta-deck-recommendation` from snapshot and catalog loading through matching, ranking, gaps, and evidence.
-- [ ] 4.3 Implement `approved-export` with immutable preview, expiring approval, idempotent write, and completion evidence.
+- [x] 4.3 Implement `approved-export` with immutable preview, expiring approval, idempotent write, and completion evidence.
 - [ ] 4.4 Implement `telemetry-flush` with consent check, minimization, batching, retry, acknowledgement, and local-only fallback.
 - [ ] 4.5 Implement `development-scenario` to arrange fixtures, run one target graph, assert evidence, and produce a report.
 - [ ] 4.6 Route Wails commands and background jobs through the activity registry and publish typed progress events.
