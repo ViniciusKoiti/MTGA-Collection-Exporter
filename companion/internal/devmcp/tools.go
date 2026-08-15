@@ -3,7 +3,6 @@ package devmcp
 import (
 	"context"
 	"encoding/json"
-	"strings"
 )
 
 type callParams struct {
@@ -39,7 +38,7 @@ func (s *Server) call(ctx context.Context, raw json.RawMessage) (any, *rpcError)
 		if err != nil {
 			return nil, toolError(err.Error())
 		}
-		return textResult(strings.Join(names, "\n")), nil
+		return textResult(s.Lim.withDefaults().page(names)), nil
 	case "scenario_execute":
 		if !s.Caps.ScenarioExecute {
 			return nil, &rpcError{Code: -32003, Message: "read-only by default: scenario-execute capability not granted"}
@@ -66,7 +65,7 @@ func (s *Server) call(ctx context.Context, raw json.RawMessage) (any, *rpcError)
 		if err != nil {
 			return nil, toolError(err.Error())
 		}
-		return textResult(strings.Join(lines, "\n")), nil
+		return textResult(s.Lim.withDefaults().page(lines)), nil
 	case "events_validate":
 		if s.Deps.ValidateEvent == nil {
 			return nil, toolError("event contract not attached")

@@ -63,7 +63,7 @@
 - [x] 7.2 Implement pre-connection environment classification that denies production and ambiguous hosts, DSNs, certificates, and markers.
 - [x] 7.3 Expose only graph listing, scenario execution, run timeline, event validation, and fixture diagnostic tools.
 - [x] 7.4 Enforce read-only inspection by default and a separate scenario-execute capability restricted to isolated namespaces.
-- [ ] 7.5 Add request, response, duration, concurrency, pagination, and audit limits without recording prompts.
+- [x] 7.5 Add request, response, duration, concurrency, pagination, and audit limits without recording prompts.
 - [ ] 7.6 Add MCP contract and abuse tests for malformed arguments, arbitrary SQL, shell requests, SSRF, oversized results, and disconnects.
 
 ## 8. Quality And Release Gates
