@@ -21,7 +21,7 @@
 - [x] 3.2 Add request ID, recovery, strict JSON, authentication, authorization, rate policy, observability, and stable error middleware.
 - [x] 3.3 Implement public manifest and compatibility endpoints with ETag, immutable cache, bounded in-process cache, and singleflight.
 - [x] 3.4 Implement installation enrollment, token hashing, consent receipt, credential rotation, revocation, and deletion endpoints.
-- [ ] 3.5 Implement telemetry batch ingestion with atomic schema validation, installation scope, idempotency, sequence, and admission control.
+- [x] 3.5 Implement telemetry batch ingestion with atomic schema validation, installation scope, idempotency, sequence, and admission control.
 - [ ] 3.6 Implement separately authenticated operations status, catalog, job, deletion, and audit endpoints without generic SQL or mutation tools.
 - [ ] 3.7 Add contract, fuzz, timeout, cancellation, unknown-field, oversized, compressed-bomb, authorization, and idempotency tests.
 
