@@ -51,8 +51,12 @@ func TestNucleoIndependeDeAdaptadores(t *testing.T) {
 	fset := token.NewFileSet()
 	for arquivo := range arquivosGo(t) {
 		normalizado := strings.ReplaceAll(arquivo, "\\", "/")
-		if !strings.Contains(normalizado, "internal/workflow/") &&
-			!strings.Contains(normalizado, "internal/domain/") {
+		nucleo := strings.Contains(normalizado, "internal/workflow/") ||
+			strings.Contains(normalizado, "internal/domain/") ||
+			strings.Contains(normalizado, "internal/application/") ||
+			strings.Contains(normalizado, "internal/ports/") ||
+			strings.Contains(normalizado, "internal/policy/")
+		if !nucleo {
 			continue
 		}
 		tree, err := parser.ParseFile(fset, arquivo, nil, parser.ImportsOnly)

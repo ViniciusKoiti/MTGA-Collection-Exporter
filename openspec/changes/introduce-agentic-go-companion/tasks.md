@@ -8,11 +8,11 @@
 
 ## 2. Go Domain And Application Foundation
 
-- [ ] 2.1 Initialize the Go module and create `cmd`, domain, application, ports, adapters, policy, and frontend package boundaries from the design.
+- [x] 2.1 Initialize the Go module and create `cmd`, domain, application, ports, adapters, policy, and frontend package boundaries from the design.
 - [x] 2.2 Implement typed card identity, collection observation, immutable snapshot, diagnostic, freshness, deck, ruleset, approval, and audit models.
-- [ ] 2.3 Define source, catalog, snapshot store, deck store, clock, clipboard, exporter, approval, audit, and optional model interfaces with compile-time adapter assertions.
-- [ ] 2.4 Implement stable application error codes and presentation-safe error mapping without leaking raw paths or exceptions.
-- [ ] 2.5 Add unit tests that enforce domain invariants and import-boundary tests that prevent domain/application packages from depending on adapters or UI.
+- [x] 2.3 Define source, catalog, snapshot store, deck store, clock, clipboard, exporter, approval, audit, and optional model interfaces with compile-time adapter assertions.
+- [x] 2.4 Implement stable application error codes and presentation-safe error mapping without leaking raw paths or exceptions.
+- [x] 2.5 Add unit tests that enforce domain invariants and import-boundary tests that prevent domain/application packages from depending on adapters or UI.
 
 ## 3. Collection Sync And Storage
 
