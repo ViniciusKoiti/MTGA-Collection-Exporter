@@ -5,6 +5,10 @@
 -- for aggregation and expiry; API keeps lookup access for enrollment
 -- and token authentication; backup reads for dumps.
 
+-- RLS scopes rows, but the base privilege must exist: telemetry reads
+-- its own batches/events (0002 granted INSERT only).
+GRANT SELECT ON telemetry_batches, accepted_events TO central_telemetry;
+
 ALTER TABLE installations     ENABLE ROW LEVEL SECURITY;
 ALTER TABLE consent_receipts  ENABLE ROW LEVEL SECURITY;
 ALTER TABLE telemetry_batches ENABLE ROW LEVEL SECURITY;

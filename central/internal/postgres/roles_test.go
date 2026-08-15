@@ -67,6 +67,13 @@ func runAs(ctx context.Context, db *sql.DB, role, stmt string) error {
 	if _, err := tx.ExecContext(ctx, fmt.Sprintf("SET LOCAL ROLE %s", role)); err != nil {
 		return err
 	}
+	if role == "central_telemetry" {
+		// The telemetry path always runs installation-scoped (RLS).
+		if _, err := tx.ExecContext(ctx,
+			`SET LOCAL app.installation_id = 'inst-1'`); err != nil {
+			return err
+		}
+	}
 	_, err = tx.ExecContext(ctx, stmt)
 	return err
 }

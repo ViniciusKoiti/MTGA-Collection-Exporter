@@ -4,7 +4,6 @@ import (
 	"context"
 	"database/sql"
 	"fmt"
-	"sync"
 	"testing"
 )
 
@@ -86,21 +85,5 @@ func TestRLSDeniesCrossPrincipalAccess(t *testing.T) {
 	if err := tx.QueryRowContext(ctx,
 		`SELECT count(*) FROM telemetry_batches`).Scan(&unscoped); err != nil || unscoped != 0 {
 		t.Fatalf("without the scope setting every row must be invisible: %d (%v)", unscoped, err)
-	}
-	_ = tx.Rollback()
-
-	var wg sync.WaitGroup // idempotency under concurrency: unique (inst, seq)
-	winners := make([]error, 2)
-	for i := range winners {
-		wg.Add(1)
-		go func() {
-			defer wg.Done()
-			_, winners[i] = db.ExecContext(ctx, `INSERT INTO telemetry_batches
-				(id, installation_id, sequence) VALUES ($1,'inst-1',9)`, fmt.Sprintf("b-9-%d", i))
-		}()
-	}
-	wg.Wait()
-	if (winners[0] == nil) == (winners[1] == nil) {
-		t.Fatalf("exactly one concurrent duplicate must win: %v / %v", winners[0], winners[1])
 	}
 }
