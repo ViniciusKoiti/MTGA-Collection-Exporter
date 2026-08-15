@@ -61,7 +61,7 @@
 - [x] 7.4 Define per-table purpose, classification, retention, deletion, backup, restore, legal hold, and owner documentation.
 - [ ] 7.5 Integrate external secret references, rotation tests, container non-root user, read-only filesystem, and restricted network policy.
 - [ ] 7.6 Add encrypted backup verification and an isolated restore drill meeting RPO, RTO, migrations, tombstones, and smoke checks.
-- [ ] 7.7 Add incident runbooks for database saturation, provider failure, signing key compromise, bad catalog, privacy request, and rollback.
+- [x] 7.7 Add incident runbooks for database saturation, provider failure, signing key compromise, bad catalog, privacy request, and rollback.
 
 ## 8. Scale And Release Gates
 
