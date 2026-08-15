@@ -47,7 +47,7 @@
 ## 6. Durable Jobs And Go Concurrency
 
 - [x] 6.1 Implement transactional job enqueue, idempotency, `SKIP LOCKED` claim, lease, heartbeat, attempts, retry, and terminal outcomes.
-- [ ] 6.2 Build one context-owned poller and bounded worker group whose maximum cannot exceed database and provider budgets.
+- [x] 6.2 Build one context-owned poller and bounded worker group whose maximum cannot exceed database and provider budgets. (CI proof: internal/worker 10.618s + concurrency 1.051s, run 31912312876)
 - [x] 6.3 Implement pipeline helpers using `errgroup.WithContext`, explicit limits, bounded channels, sender cancellation, and deterministic reducers.
 - [x] 6.4 Add a concurrency registry documenting owner, parent context, limit source, downstream budget, result path, and shutdown behavior for every goroutine site.
 - [x] 6.5 Prohibit detached handler work, goroutine-per-record inserts, unbounded channels, model-selected concurrency, and hidden background loops with architecture tests.
