@@ -10,8 +10,10 @@ import (
 func TestRatePolicyRefusesBeyondLimitAndResets(t *testing.T) {
 	p := &RatePolicy{Limit: 2, Window: time.Minute, MaxKeys: 4}
 	now := time.Unix(1000, 0)
-	if !p.Allow("inst-1", now) || !p.Allow("inst-1", now) {
-		t.Fatal("requests within the limit must be admitted")
+	for i := range 2 {
+		if !p.Allow("inst-1", now) {
+			t.Fatalf("request %d within the limit must be admitted", i)
+		}
 	}
 	if p.Allow("inst-1", now) {
 		t.Fatal("request beyond the limit must be refused")
