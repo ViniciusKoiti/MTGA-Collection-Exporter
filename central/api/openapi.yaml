@@ -1,0 +1,302 @@
+openapi: 3.0.3
+info:
+  title: MTGA Central API
+  version: 1.0.0
+  description: >
+    Contract for the central Go platform (OpenSpec
+    add-central-go-platform, task 1.3). Faithful to the handlers in
+    internal/httpapi; the contract test (task 1.4) keeps them in sync.
+servers:
+  - url: https://central.example.invalid
+security: []
+paths:
+  /v1/manifest/current:
+    get:
+      summary: Current signed catalog manifest
+      responses:
+        "200":
+          description: Manifest document
+          headers:
+            ETag: {schema: {type: string}}
+            Cache-Control: {schema: {type: string}}
+          content:
+            application/json:
+              schema: {$ref: "#/components/schemas/Manifest"}
+        "304": {description: Not modified (If-None-Match)}
+        "503": {$ref: "#/components/responses/Error"}
+  /v1/compatibility:
+    get:
+      summary: Client compatibility matrix
+      responses:
+        "200":
+          description: Compatibility document
+          content:
+            application/json:
+              schema: {type: object}
+        "304": {description: Not modified}
+        "503": {$ref: "#/components/responses/Error"}
+  /v1/installations:
+    post:
+      summary: Enroll an installation with its first consent receipt
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: {$ref: "#/components/schemas/EnrollRequest"}
+      responses:
+        "201":
+          description: Once-shown credentials
+          content:
+            application/json:
+              schema: {$ref: "#/components/schemas/EnrollResponse"}
+        "400": {$ref: "#/components/responses/Error"}
+  /v1/installations/rotate:
+    post:
+      summary: Rotate the presented credential (compare-and-swap)
+      security: [{installationToken: []}]
+      responses:
+        "200":
+          description: New once-shown token
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [token]
+                properties: {token: {type: string}}
+        "401": {$ref: "#/components/responses/Error"}
+        "409": {$ref: "#/components/responses/Error"}
+  /v1/installations/revoke:
+    post:
+      summary: Revoke the caller's credential
+      security: [{installationToken: []}]
+      responses:
+        "204": {description: Revoked}
+        "401": {$ref: "#/components/responses/Error"}
+  /v1/installations/deletion:
+    post:
+      summary: File a deletion request gated by the deletion secret
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: {$ref: "#/components/schemas/DeletionRequest"}
+      responses:
+        "202": {description: Deletion filed}
+        "400": {$ref: "#/components/responses/Error"}
+        "404": {$ref: "#/components/responses/Error"}
+  /v1/telemetry:
+    post:
+      summary: Ingest one idempotent telemetry batch
+      security: [{installationToken: []}]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: {$ref: "#/components/schemas/TelemetryBatch"}
+      responses:
+        "202": {description: Batch accepted}
+        "200": {description: Idempotent replay acknowledged}
+        "422": {$ref: "#/components/responses/Error"}
+        "429": {$ref: "#/components/responses/Error"}
+  /ops/v1/status:
+    get:
+      summary: Operations status snapshot
+      security: [{operationsToken: []}]
+      responses:
+        "200":
+          description: Status
+          content:
+            application/json:
+              schema: {$ref: "#/components/schemas/OpsStatus"}
+        "403": {$ref: "#/components/responses/Error"}
+  /ops/v1/jobs/{id}:
+    get:
+      summary: One durable job, read-only
+      security: [{operationsToken: []}]
+      parameters:
+        - {name: id, in: path, required: true, schema: {type: string}}
+      responses:
+        "200":
+          description: Job
+          content:
+            application/json:
+              schema: {$ref: "#/components/schemas/Job"}
+        "404": {$ref: "#/components/responses/Error"}
+  /ops/v1/deletions:
+    get:
+      summary: Deletion requests with completion evidence
+      security: [{operationsToken: []}]
+      parameters: [{$ref: "#/components/parameters/Limit"}]
+      responses:
+        "200":
+          description: Deletions
+          content:
+            application/json:
+              schema:
+                type: array
+                items: {$ref: "#/components/schemas/Deletion"}
+  /ops/v1/audit:
+    get:
+      summary: Append-only audit entries
+      security: [{operationsToken: []}]
+      parameters: [{$ref: "#/components/parameters/Limit"}]
+      responses:
+        "200":
+          description: Audit entries
+          content:
+            application/json:
+              schema:
+                type: array
+                items: {$ref: "#/components/schemas/Audit"}
+  /ops/v1/catalog:
+    get:
+      summary: Currently published catalog snapshot
+      security: [{operationsToken: []}]
+      responses:
+        "200":
+          description: Catalog
+          content:
+            application/json:
+              schema: {$ref: "#/components/schemas/OpsCatalog"}
+  /livez:
+    get:
+      summary: Process liveness (never runs dependency probes)
+      responses:
+        "200": {description: Alive}
+  /readyz:
+    get:
+      summary: Readiness across the six capabilities
+      responses:
+        "200": {description: Ready}
+        "503":
+          description: Failing capability names only
+          content:
+            application/json:
+              schema: {$ref: "#/components/schemas/Readiness"}
+components:
+  securitySchemes:
+    installationToken: {type: http, scheme: bearer, description: Installation-scoped token; server stores SHA-256 only}
+    operationsToken: {type: http, scheme: bearer, description: Separately issued operations-scoped token}
+  parameters:
+    Limit:
+      name: limit
+      in: query
+      required: false
+      schema: {type: integer, minimum: 1, maximum: 100}
+      description: Capped server-side at 100 regardless of the request.
+  responses:
+    Error:
+      description: Stable error envelope
+      content:
+        application/json:
+          schema: {$ref: "#/components/schemas/ErrorEnvelope"}
+  schemas:
+    ErrorEnvelope:
+      type: object
+      required: [error]
+      properties:
+        error:
+          type: object
+          required: [code, message]
+          properties:
+            code: {type: string, enum: [invalid_request, invalid_batch, unauthenticated, forbidden, not_found, conflict, rate_limited, method_not_allowed, unavailable, internal]}
+            message: {type: string}
+            request_id: {type: string}
+    Manifest:
+      type: object
+      required: [key_id, signature, object, schema]
+      properties:
+        key_id: {type: string}
+        signature: {type: string}
+        schema: {type: string}
+        object:
+          type: object
+          required: [key, sha256, size]
+          properties:
+            key: {type: string}
+            sha256: {type: string}
+            size: {type: integer, format: int64}
+    EnrollRequest:
+      type: object
+      additionalProperties: false
+      required: [purpose, version]
+      properties:
+        purpose: {type: string, minLength: 1}
+        version: {type: integer, minimum: 1}
+    EnrollResponse:
+      type: object
+      required: [installation_id, token, deletion_secret]
+      properties:
+        installation_id: {type: string}
+        token: {type: string, description: Shown exactly once}
+        deletion_secret: {type: string, description: Shown exactly once}
+    DeletionRequest:
+      type: object
+      additionalProperties: false
+      required: [installation_id, deletion_secret]
+      properties:
+        installation_id: {type: string}
+        deletion_secret: {type: string}
+    TelemetryBatch:
+      type: object
+      additionalProperties: false
+      required: [batch_id, sequence, events]
+      properties:
+        batch_id: {type: string}
+        sequence: {type: integer, format: int64, minimum: 1}
+        events:
+          type: array
+          minItems: 1
+          items:
+            type: object
+            additionalProperties: false
+            required: [name]
+            properties:
+              name: {type: string, description: Must be on the server allowlist}
+              attrs:
+                type: object
+                additionalProperties: {type: string}
+    OpsStatus:
+      type: object
+      properties:
+        schema_ready: {type: boolean}
+        queue_depth: {type: integer, format: int64}
+        oldest_job_age_seconds: {type: integer, format: int64}
+        pool_in_use: {type: integer}
+        pool_max: {type: integer}
+        signing_loaded: {type: boolean}
+    Job:
+      type: object
+      required: [id, kind, status, attempts]
+      properties:
+        id: {type: string}
+        kind: {type: string}
+        status: {type: string, enum: [pending, claimed, succeeded, failed]}
+        attempts: {type: integer}
+        owner: {type: string}
+    Deletion:
+      type: object
+      properties:
+        installation_id: {type: string}
+        completed: {type: boolean}
+        proof: {type: string, description: Non-identifying evidence}
+    Audit:
+      type: object
+      properties:
+        actor: {type: string}
+        action: {type: string}
+        at: {type: string, format: date-time}
+    OpsCatalog:
+      type: object
+      properties:
+        snapshot_id: {type: string}
+        published_at: {type: string, format: date-time}
+        card_count: {type: integer}
+    Readiness:
+      type: object
+      required: [ready]
+      properties:
+        ready: {type: boolean}
+        failing:
+          type: array
+          items: {type: string, enum: [schema, storage, pool, queue, signing, publication]}

@@ -2,7 +2,7 @@
 
 - [x] 1.1 Create the separate `central` Go module with `api`, `worker`, and `migrate` commands plus domain, application, ports, and adapter boundaries.
 - [x] 1.2 Add pinned toolchain, formatting, vet, static analysis, race, vulnerability, dependency, and 100-line source-file gates.
-- [ ] 1.3 Define OpenAPI, manifest, artifact, installation, consent, telemetry, deletion, job, audit, health, and error schemas.
+- [x] 1.3 Define OpenAPI, manifest, artifact, installation, consent, telemetry, deletion, job, audit, health, and error schemas.
 - [ ] 1.4 Add generated-or-handwritten contract verification and prove desktop code imports no central Go package.
 - [x] 1.5 Implement strict configuration parsing, environment identity, secret references, safe defaults, and redacted startup diagnostics.
 
