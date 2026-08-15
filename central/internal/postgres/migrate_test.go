@@ -70,7 +70,11 @@ func TestForwardMigrationsApplyAndAreIdempotent(t *testing.T) {
 		`SELECT COUNT(*) FROM schema_migrations`).Scan(&applied); err != nil {
 		t.Fatalf("versions: %v", err)
 	}
-	if applied != 1 { // one migration file today; idempotency kept it single
-		t.Fatalf("expected exactly 1 applied version, got %d", applied)
+	files, err := migrations.ReadDir("migrations")
+	if err != nil {
+		t.Fatalf("embedded migrations: %v", err)
+	}
+	if applied != len(files) { // idempotency: every file applied exactly once
+		t.Fatalf("expected %d applied versions, got %d", len(files), applied)
 	}
 }
