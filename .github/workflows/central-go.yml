@@ -1,28 +1,34 @@
-name: central-go
+name: go-modules
 
 on:
   push:
     paths:
       - "central/**"
+      - "companion/**"
       - ".github/workflows/central-go.yml"
   pull_request:
     paths:
       - "central/**"
+      - "companion/**"
       - ".github/workflows/central-go.yml"
 
 jobs:
   quality:
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        module: [central, companion]
     defaults:
       run:
-        working-directory: central
+        working-directory: ${{ matrix.module }}
     steps:
       - uses: actions/checkout@v4
 
       - uses: actions/setup-go@v5
         with:
-          go-version-file: central/go.mod
-          cache-dependency-path: central/go.sum
+          go-version-file: ${{ matrix.module }}/go.mod
+          cache: false
 
       - name: Formatação (gofmt)
         run: test -z "$(gofmt -l .)"

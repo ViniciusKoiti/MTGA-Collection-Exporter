@@ -3,12 +3,12 @@
 - [ ] 1.1 Revise the companion change so its new MCP is development-only and the current Python MCP is documented as legacy compatibility.
 - [ ] 1.2 Verify the companion Go domain, application, policy, and storage ports exist before adding workflow adapters.
 - [ ] 1.3 Create an activity inventory mapping every external command and scheduled job to a graph kind or a documented pure-query exemption.
-- [ ] 1.4 Add package dependency tests that keep workflow definitions independent from Wails, SQLite, PostgreSQL, MCP, and model SDKs.
+- [x] 1.4 Add package dependency tests that keep workflow definitions independent from Wails, SQLite, PostgreSQL, MCP, and model SDKs.
 
 ## 2. Graph Runtime Contracts
 
-- [ ] 2.1 Define graph identity, node, transition, outcome, limit, recovery, run, step, and typed-error contracts.
-- [ ] 2.2 Implement registry validation for identities, reachability, terminal outcomes, transitions, and graph-version uniqueness.
+- [x] 2.1 Define graph identity, node, transition, outcome, limit, recovery, run, step, and typed-error contracts.
+- [x] 2.2 Implement registry validation for identities, reachability, terminal outcomes, transitions, and graph-version uniqueness.
 - [ ] 2.3 Implement the engine that executes nodes and resolves only compiled transitions from typed outcomes.
 - [ ] 2.4 Enforce step, tool-call, repeated-call, payload-size, active-deadline, and cancellation limits with stable outcomes.
 - [ ] 2.5 Integrate the policy and approval ports so exact effect previews pause and resume a run safely.
@@ -68,7 +68,7 @@
 
 ## 8. Quality And Release Gates
 
-- [ ] 8.1 Add a CI check limiting manually maintained Go files to 100 physical lines with only documented generated, migration, lockfile, and fixture exclusions.
+- [x] 8.1 Add a CI check limiting manually maintained Go files to 100 physical lines with only documented generated, migration, lockfile, and fixture exclusions.
 - [ ] 8.2 Run deterministic workflow, harness, policy, replay, race, and forbidden-field tests without MTGA, network, administrator access, or an LLM.
 - [ ] 8.3 Run SQLite and PostgreSQL integration suites with isolated databases and prove production identities are rejected.
 - [ ] 8.4 Run Playwright end-to-end scenarios against Wails progress, approval, cancellation, recovery, and error states.
