@@ -40,7 +40,7 @@
 
 - [x] 5.1 Implement Arena deck-text parsing and formatting with fixtures for main deck, sideboard, localized names, unknown cards, and malformed lines.
 - [x] 5.2 Implement ownership comparison against a selected snapshot with required, owned, missing, and wildcard-relevant quantities.
-- [ ] 5.3 Implement a versioned Standard ruleset first, including deck size, copy limits, sideboard constraints, card legality, and stale-catalog reporting.
+- [x] 5.3 Implement a versioned Standard ruleset first, including deck size, copy limits, sideboard constraints, card legality, and stale-catalog reporting.
 - [ ] 5.4 Implement deterministic owned-card substitution candidates with documented color, mana, type, format, and ranking evidence.
 - [ ] 5.5 Implement local saved-deck revisions linked to the collection snapshot and ruleset version used for validation.
 - [ ] 5.6 Implement the Decks workspace with structured editing, ownership and legality results, substitutions, revision history, and Arena export preview.
