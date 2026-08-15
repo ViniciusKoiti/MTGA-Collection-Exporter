@@ -8,10 +8,13 @@ import (
 	"strings"
 )
 
-// Principal identifies an authenticated installation and its scope.
+// Principal identifies an authenticated installation and its scope;
+// TokenHash carries the hash of the credential actually presented so
+// rotation can compare-and-swap against it.
 type Principal struct {
 	InstallationID string
 	Scope          string
+	TokenHash      string
 }
 
 const principalKey ctxKey = 2
@@ -38,12 +41,14 @@ func WithAuth(verify Verifier) func(http.Handler) http.Handler {
 				return
 			}
 			sum := sha256.Sum256([]byte(raw))
-			p, err := verify(r.Context(), hex.EncodeToString(sum[:]))
+			hash := hex.EncodeToString(sum[:])
+			p, err := verify(r.Context(), hash)
 			if err != nil {
 				WriteError(w, r, http.StatusUnauthorized, "unauthenticated",
 					"unknown or revoked token")
 				return
 			}
+			p.TokenHash = hash
 			next.ServeHTTP(w, r.WithContext(
 				context.WithValue(r.Context(), principalKey, p)))
 		})
