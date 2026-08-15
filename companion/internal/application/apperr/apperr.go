@@ -21,6 +21,7 @@ const (
 	CodeApprovalRequired   Code = "approval_required"
 	CodeApprovalDenied     Code = "approval_denied"
 	CodeConflict           Code = "conflict"
+	CodeAssistantDisabled  Code = "assistant_disabled"
 	CodeInternal           Code = "internal"
 )
 
