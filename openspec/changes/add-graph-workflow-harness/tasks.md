@@ -11,10 +11,10 @@
 - [x] 2.2 Implement registry validation for identities, reachability, terminal outcomes, transitions, and graph-version uniqueness.
 - [x] 2.3 Implement the engine that executes nodes and resolves only compiled transitions from typed outcomes.
 - [x] 2.4 Enforce step, tool-call, repeated-call, payload-size, active-deadline, and cancellation limits with stable outcomes.
-- [ ] 2.5 Integrate the policy and approval ports so exact effect previews pause and resume a run safely.
-- [ ] 2.6 Add in-memory run, approval, outbox, clock, and ID adapters for runtime unit tests.
+- [x] 2.5 Integrate the policy and approval ports so exact effect previews pause and resume a run safely.
+- [x] 2.6 Add in-memory run, approval, outbox, clock, and ID adapters for runtime unit tests.
 - [ ] 2.7 Add an activity registry and architecture test that rejects external commands or jobs which bypass a graph.
-- [ ] 2.8 Add table-driven and race tests for valid graphs, invalid definitions, policy rejection, limits, cancellation, and concurrency.
+- [x] 2.8 Add table-driven and race tests for valid graphs, invalid definitions, policy rejection, limits, cancellation, and concurrency.
 
 ## 3. Persistence And Recovery
 

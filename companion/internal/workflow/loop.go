@@ -12,6 +12,12 @@ import (
 func (e *Engine) loop(ctx context.Context, def Definition, run Run) (Run, error) {
 	deadline := run.StartedAt.Add(def.Limits.ActiveDeadline)
 	ctx = withToolGuard(ctx, newToolGuard(def.Limits))
+	if e.policy != nil {
+		ctx = withEffectGate(ctx, &effectGate{
+			policy: e.policy, approvals: e.approvals, clock: e.clock,
+			run: run.ID, graph: run.Graph,
+		})
+	}
 	for indice := 1; ; indice++ {
 		if err := ctx.Err(); err != nil {
 			return e.finish(ctx, run, RunCancelled, OutcomeCancelled, err)
@@ -70,6 +76,12 @@ func (e *Engine) desfecho(ctx context.Context, run Run, alvo Target, err error) 
 	switch {
 	case err == nil:
 		return e.finish(ctx, run, RunSucceeded, alvo.Terminal, nil)
+	case errors.Is(err, ErrApprovalPending):
+		return e.finish(ctx, run, RunWaiting, "", err)
+	case errors.Is(err, ErrPolicyDenied):
+		return e.finish(ctx, run, RunFailed, OutcomePolicyDenied, err)
+	case errors.Is(err, ErrApprovalExpired):
+		return e.finish(ctx, run, RunFailed, OutcomeApprovalExpired, err)
 	case errors.Is(err, ErrUnmappedOutcome):
 		return e.finish(ctx, run, RunFailed, OutcomeUnmapped, err)
 	case errors.Is(err, ErrPayloadExceeded):

@@ -3,23 +3,31 @@ package workflow
 import (
 	"context"
 	"errors"
-	"fmt"
-	"time"
 )
 
 // Engine executa grafos registrados resolvendo apenas transições compiladas
 // a partir de outcomes tipados (decisão 2 do design). Toda dependência chega
 // por port na composição; o engine não conhece SQLite, Wails nem modelo.
 type Engine struct {
-	registry *Registry
-	clock    Clock
-	ids      IDSource
-	store    RunStore
+	registry  *Registry
+	clock     Clock
+	ids       IDSource
+	store     RunStore
+	policy    Policy
+	approvals ApprovalStore
 }
 
 // NewEngine monta o engine com os ports obrigatórios.
 func NewEngine(registry *Registry, clock Clock, ids IDSource, store RunStore) *Engine {
 	return &Engine{registry: registry, clock: clock, ids: ids, store: store}
+}
+
+// WithPolicy liga a política e o store de aprovações. Sem eles, qualquer
+// nó que peça um efeito recebe negação (padrão seguro de RequestEffect).
+func (e *Engine) WithPolicy(policy Policy, approvals ApprovalStore) *Engine {
+	e.policy = policy
+	e.approvals = approvals
+	return e
 }
 
 // Start cria o run, persiste o checkpoint inicial e executa até um outcome
@@ -64,35 +72,4 @@ func (e *Engine) finish(
 		return run, errors.Join(causa, err)
 	}
 	return run, causa
-}
-
-// registraStep grava a evidência da tentativa sem payloads (spec
-// workflow-observability: nada de estado, entradas ou saídas no journal).
-func (e *Engine) registraStep(
-	ctx context.Context,
-	run Run,
-	indice int,
-	outcome OutcomeCode,
-	execErr error,
-	inicio, fim time.Time,
-) error {
-	step := Step{
-		Run:      run.ID,
-		Index:    indice,
-		Node:     run.Current,
-		Attempt:  1,
-		Outcome:  outcome,
-		Started:  inicio,
-		Finished: fim,
-	}
-	if execErr != nil {
-		step.Err = string(OutcomeNodeError)
-		if errors.Is(execErr, ErrLimitExceeded) {
-			step.Err = string(OutcomeToolLimit)
-		}
-	}
-	if err := e.store.AppendStep(ctx, step); err != nil {
-		return fmt.Errorf("workflow: falha ao registrar step: %w", err)
-	}
-	return nil
 }
