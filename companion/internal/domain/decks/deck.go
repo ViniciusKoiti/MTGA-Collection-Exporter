@@ -9,11 +9,14 @@ import (
 )
 
 // Entry é uma linha de deck: nome como veio do texto Arena, Arena ID
-// quando resolvido e quantidade.
+// quando resolvido, quantidade e, quando o texto trouxe, set e número de
+// colecionador (preservados para o round-trip de formatação).
 type Entry struct {
 	Name     string
 	Arena    collection.ArenaID
 	Quantity int
+	Set      string
+	Numero   string
 }
 
 // Deck é um deck no formato Arena: principal e sideboard.
