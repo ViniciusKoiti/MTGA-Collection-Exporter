@@ -38,7 +38,7 @@
 
 ## 5. Programmatic Development Harness
 
-- [ ] 5.1 Define versioned Go and JSON scenario schemas with strict unknown-field, size, and fixture validation.
+- [x] 5.1 Define versioned Go and JSON scenario schemas with strict unknown-field, size, and fixture validation.
 - [ ] 5.2 Build the harness composition profile around the production engine, registry, nodes, migrations, and activity entry points.
 - [ ] 5.3 Implement controlled clock, ID, planner, provider, process, central API, and effect adapters through production ports.
 - [x] 5.4 Implement latency, timeout, malformed-response, disconnect, and checkpoint-crash fault decorators.
@@ -55,7 +55,7 @@
 - [x] 6.4 Implement low-cardinality counters and durations without run, user, card, or deck labels.
 - [x] 6.5 Implement dry-run replay using pinned graph versions and sanitized fixture references without effect dispatch.
 - [x] 6.6 Implement age and size retention that preserves active checkpoints and authoritative domain snapshots.
-- [ ] 6.7 Implement a redacted diagnostic bundle and compare it against privacy golden files.
+- [x] 6.7 Implement a redacted diagnostic bundle and compare it against privacy golden files.
 
 ## 7. Development MCP
 
