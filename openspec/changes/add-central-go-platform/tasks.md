@@ -55,7 +55,7 @@
 
 ## 7. Operations And Governance
 
-- [ ] 7.1 Implement structured `slog` output, OpenTelemetry-compatible traces, and low-cardinality metrics with privacy tests.
+- [x] 7.1 Implement structured `slog` output, OpenTelemetry-compatible traces, and low-cardinality metrics with privacy tests.
 - [x] 7.2 Implement distinct liveness and readiness for schema, storage, pool pressure, queue age, signing, and publication capability.
 - [x] 7.3 Implement signal-driven shutdown that fails readiness, stops claims, cancels producers, drains workers, checkpoints, stops HTTP, and closes pools.
 - [ ] 7.4 Define per-table purpose, classification, retention, deletion, backup, restore, legal hold, and owner documentation.
