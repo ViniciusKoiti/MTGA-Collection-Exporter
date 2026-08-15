@@ -4,7 +4,7 @@
 - [ ] 1.2 Capture sanitized Detailed Logs fixtures from the current MTG Arena client and document whether a complete collection payload can be detected reliably.
 - [ ] 1.3 Add a fixture-based decision test that enables the log source only for recognized payload versions and falls back to explicit import otherwise.
 - [ ] 1.4 Run a Windows packaging spike for stable Wails and candidate `database/sql` SQLite drivers; record binary, WebView, migration, and clean-machine results.
-- [ ] 1.5 Document the integration policy matrix for allowed read operations, approval-required local effects, and prohibited MTGA control operations.
+- [x] 1.5 Document the integration policy matrix for allowed read operations, approval-required local effects, and prohibited MTGA control operations.
 
 ## 2. Go Domain And Application Foundation
 
