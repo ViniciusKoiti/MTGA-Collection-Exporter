@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/ViniciusKoiti/MTGA-Collection-Exporter/companion/internal/domain/collection"
+	"github.com/ViniciusKoiti/MTGA-Collection-Exporter/companion/internal/application/normalize"
 	wf "github.com/ViniciusKoiti/MTGA-Collection-Exporter/companion/internal/workflow"
 )
 
@@ -36,33 +36,18 @@ func observa(deps Deps) wf.Node {
 	}}
 }
 
-// normaliza resolve identidades pelo catálogo preservando não resolvidas.
+// normaliza delegates to the single product normalization (task 3.2):
+// the graph node owns orchestration only, never the rules.
 func normaliza(deps Deps) wf.Node {
 	return no{"normaliza", func(ctx context.Context, estado Estado) (Estado, wf.OutcomeCode, error) {
-		for _, bruto := range estado.Observacao.Quantities {
-			if bruto.Quantity == 0 {
-				estado.Diagnosticos = append(estado.Diagnosticos, collection.Diagnostic{
-					Code: "quantidade_zero", Detail: "linha ignorada",
-					Severity: collection.SeverityInfo,
-				})
-				continue
-			}
-			identidade, achou, err := deps.Catalog.ResolvePorArena(ctx, bruto.Arena)
-			if err != nil {
-				return estado, "", err
-			}
-			if bruto.Arena != 0 && achou {
-				estado.Entradas = append(estado.Entradas, collection.Entry{
-					Identity: identidade, Quantity: bruto.Quantity,
-				})
-				estado.Resolvidas++
-				continue
-			}
-			estado.Entradas = append(estado.Entradas, collection.Entry{
-				Unresolved: true, Raw: bruto.RawIdentity, Quantity: bruto.Quantity,
-			})
-			estado.NaoResolvidas++
+		result, err := normalize.Observation(ctx, deps.Catalog, estado.Observacao)
+		if err != nil {
+			return estado, "", err
 		}
+		estado.Entradas = result.Entries
+		estado.Diagnosticos = result.Diagnostics
+		estado.Resolvidas = result.Resolved
+		estado.NaoResolvidas = result.Unresolved
 		return estado, "ok", nil
 	}}
 }
