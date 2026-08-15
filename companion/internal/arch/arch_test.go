@@ -56,7 +56,9 @@ func TestNucleoIndependeDeAdaptadores(t *testing.T) {
 			strings.Contains(normalizado, "internal/application/") ||
 			strings.Contains(normalizado, "internal/ports/") ||
 			strings.Contains(normalizado, "internal/policy/")
-		if !nucleo {
+		// Arquivos de teste usam fakes dos adapters por definição; a
+		// fronteira protege apenas o código de produção do núcleo.
+		if !nucleo || strings.HasSuffix(normalizado, "_test.go") {
 			continue
 		}
 		tree, err := parser.ParseFile(fset, arquivo, nil, parser.ImportsOnly)
