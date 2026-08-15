@@ -34,6 +34,12 @@ type ScenarioJSON struct {
 		ValidadeSegundos int64 `json:"validade_segundos"`
 	} `json:"aprovacoes,omitempty"`
 	InicioUnix int64 `json:"inicio_unix"`
+	// Esperado é a asserção declarada do cenário (status/outcome finais);
+	// o grafo development-scenario compara e reprova divergência.
+	Esperado *struct {
+		Status  string `json:"status"`
+		Outcome string `json:"outcome"`
+	} `json:"esperado,omitempty"`
 }
 
 // ParseScenario valida a forma JSON estritamente: campo desconhecido,
