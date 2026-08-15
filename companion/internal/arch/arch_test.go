@@ -35,7 +35,9 @@ func TestWorkflowIndependeDeAdaptadores(t *testing.T) {
 		}
 		for _, imp := range tree.Imports {
 			caminho := strings.Trim(imp.Path.Value, `"`)
-			if strings.Contains(caminho, ".") { // domínio => fora da stdlib
+			proprio := strings.HasPrefix(caminho,
+				"github.com/ViniciusKoiti/MTGA-Collection-Exporter/companion/")
+			if strings.Contains(caminho, ".") && !proprio { // fora da stdlib e do módulo
 				t.Errorf("%s importa dependência externa proibida: %s", arquivo, caminho)
 			}
 		}

@@ -88,7 +88,8 @@ func validarAlcancabilidade(d Definition) error {
 // validarLimites permite reduzir limites, nunca exceder os tetos duros.
 func validarLimites(id Identity, l, caps Limits) error {
 	if l.MaxSteps > caps.MaxSteps || l.MaxToolCalls > caps.MaxToolCalls ||
-		l.MaxRepeatedCalls > caps.MaxRepeatedCalls || l.ActiveDeadline > caps.ActiveDeadline {
+		l.MaxRepeatedCalls > caps.MaxRepeatedCalls ||
+		l.MaxPayloadBytes > caps.MaxPayloadBytes || l.ActiveDeadline > caps.ActiveDeadline {
 		return fmt.Errorf("%w: %s excede tetos duros", ErrInvalidDefinition, id)
 	}
 	return nil

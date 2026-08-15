@@ -56,6 +56,9 @@ func (d Definition) limitesEfetivos() Limits {
 	if efetivo.MaxRepeatedCalls == 0 {
 		efetivo.MaxRepeatedCalls = padrao.MaxRepeatedCalls
 	}
+	if efetivo.MaxPayloadBytes == 0 {
+		efetivo.MaxPayloadBytes = padrao.MaxPayloadBytes
+	}
 	if efetivo.ActiveDeadline == 0 {
 		efetivo.ActiveDeadline = padrao.ActiveDeadline
 	}

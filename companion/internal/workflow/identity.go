@@ -56,6 +56,7 @@ type Limits struct {
 	MaxSteps         int
 	MaxToolCalls     int
 	MaxRepeatedCalls int
+	MaxPayloadBytes  int
 	ActiveDeadline   time.Duration
 }
 
@@ -65,6 +66,7 @@ func DefaultLimits() Limits {
 		MaxSteps:         8,
 		MaxToolCalls:     6,
 		MaxRepeatedCalls: 2,
+		MaxPayloadBytes:  1 << 20, // 1 MiB de estado serializado por checkpoint
 		ActiveDeadline:   30 * time.Second,
 	}
 }

@@ -23,6 +23,9 @@ func NewRegistry(caps Limits) *Registry {
 	if caps.MaxRepeatedCalls == 0 {
 		caps.MaxRepeatedCalls = padrao.MaxRepeatedCalls
 	}
+	if caps.MaxPayloadBytes == 0 {
+		caps.MaxPayloadBytes = padrao.MaxPayloadBytes
+	}
 	if caps.ActiveDeadline == 0 {
 		caps.ActiveDeadline = padrao.ActiveDeadline
 	}

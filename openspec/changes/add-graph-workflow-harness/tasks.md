@@ -9,8 +9,8 @@
 
 - [x] 2.1 Define graph identity, node, transition, outcome, limit, recovery, run, step, and typed-error contracts.
 - [x] 2.2 Implement registry validation for identities, reachability, terminal outcomes, transitions, and graph-version uniqueness.
-- [ ] 2.3 Implement the engine that executes nodes and resolves only compiled transitions from typed outcomes.
-- [ ] 2.4 Enforce step, tool-call, repeated-call, payload-size, active-deadline, and cancellation limits with stable outcomes.
+- [x] 2.3 Implement the engine that executes nodes and resolves only compiled transitions from typed outcomes.
+- [x] 2.4 Enforce step, tool-call, repeated-call, payload-size, active-deadline, and cancellation limits with stable outcomes.
 - [ ] 2.5 Integrate the policy and approval ports so exact effect previews pause and resume a run safely.
 - [ ] 2.6 Add in-memory run, approval, outbox, clock, and ID adapters for runtime unit tests.
 - [ ] 2.7 Add an activity registry and architecture test that rejects external commands or jobs which bypass a graph.
