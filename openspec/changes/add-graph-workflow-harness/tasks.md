@@ -74,5 +74,5 @@
 - [ ] 8.4 Run Playwright end-to-end scenarios against Wails progress, approval, cancellation, recovery, and error states.
 - [ ] 8.5 Run local performance, central load, soak, and fault scenarios against the thresholds in `docs/architecture/system-design-tests.md`.
 - [ ] 8.6 Inspect release artifacts to prove the development MCP, test credentials, private fixtures, and development configuration are absent.
-- [ ] 8.7 Map every specification scenario to an automated test or a documented Windows-only manual verification.
+- [x] 8.7 Map every specification scenario to an automated test or a documented Windows-only manual verification. (companion/docs/scenario-map.md; 2 honest partials noted inline)
 - [ ] 8.8 Validate the OpenSpec change in strict mode and store CI evidence for all release gates.
