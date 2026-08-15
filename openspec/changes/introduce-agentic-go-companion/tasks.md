@@ -44,7 +44,7 @@
 - [x] 5.4 Implement deterministic owned-card substitution candidates with documented color, mana, type, format, and ranking evidence.
 - [x] 5.5 Implement local saved-deck revisions linked to the collection snapshot and ruleset version used for validation.
 - [ ] 5.6 Implement the Decks workspace with structured editing, ownership and legality results, substitutions, revision history, and Arena export preview.
-- [ ] 5.7 Implement direct user copy/export commands and approval-token execution for assistant-requested copy/export operations.
+- [x] 5.7 Implement direct user copy/export commands and approval-token execution for assistant-requested copy/export operations.
 
 ## 6. Agent Tools And Legacy Compatibility
 
