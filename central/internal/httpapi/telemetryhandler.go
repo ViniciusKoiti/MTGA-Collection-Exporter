@@ -30,7 +30,7 @@ func TelemetryHandler(policy EventPolicy, store TelemetryStore) http.Handler {
 		}
 		events := make([]TelemetryEventInput, len(req.Events))
 		for i, event := range req.Events {
-			events[i] = TelemetryEventInput{Name: event.Name, Attrs: event.Attrs}
+			events[i] = TelemetryEventInput(event)
 		}
 		err := store.IngestBatch(r.Context(), principal.InstallationID,
 			req.BatchID, req.Sequence, events)
