@@ -32,7 +32,21 @@ func (e *Engine) registraStep(
 	if err := e.store.AppendStep(ctx, step); err != nil {
 		return fmt.Errorf("workflow: falha ao registrar step: %w", err)
 	}
-	return nil
+	if e.events == nil {
+		return nil
+	}
+	ev := Event{
+		Schema: EventSchema, Run: run.ID, Step: indice, Graph: run.Graph,
+		Correlation: string(run.ID), At: fim, Outcome: outcome,
+		DurationMS: fim.Sub(inicio).Milliseconds(),
+	}
+	if indice > 1 {
+		ev.Causation = fmt.Sprintf("step-%d", indice-1)
+	}
+	if step.Err != "" {
+		ev.Attrs = map[string]string{"error_code": step.Err}
+	}
+	return e.events.Emit(ctx, ev)
 }
 
 // codigoEstavel traduz o erro tipado da tentativa em código estável de

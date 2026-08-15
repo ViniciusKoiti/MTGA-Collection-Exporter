@@ -15,6 +15,7 @@ type Engine struct {
 	store     RunStore
 	policy    Policy
 	approvals ApprovalStore
+	events    EventSink
 }
 
 // NewEngine monta o engine com os ports obrigatórios.
@@ -27,6 +28,13 @@ func NewEngine(registry *Registry, clock Clock, ids IDSource, store RunStore) *E
 func (e *Engine) WithPolicy(policy Policy, approvals ApprovalStore) *Engine {
 	e.policy = policy
 	e.approvals = approvals
+	return e
+}
+
+// WithEvents liga o sink de eventos; o engine sempre o envolve no
+// ValidatingSink para que campo proibido jamais seja persistido.
+func (e *Engine) WithEvents(sink EventSink) *Engine {
+	e.events = ValidatingSink{Next: sink}
 	return e
 }
 
@@ -70,6 +78,16 @@ func (e *Engine) finish(
 	run.UpdatedAt = e.clock.Now()
 	if err := e.store.Update(ctx, run); err != nil {
 		return run, errors.Join(causa, err)
+	}
+	if e.events != nil {
+		ev := Event{
+			Schema: EventSchema, Run: run.ID, Graph: run.Graph,
+			Correlation: string(run.ID), At: run.UpdatedAt, Outcome: outcome,
+			Attrs: map[string]string{"status": string(status)},
+		}
+		if err := e.events.Emit(ctx, ev); err != nil {
+			return run, errors.Join(causa, err)
+		}
 	}
 	return run, causa
 }

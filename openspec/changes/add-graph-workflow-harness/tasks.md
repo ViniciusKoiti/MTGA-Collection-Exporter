@@ -49,9 +49,9 @@
 
 ## 6. Workflow Observability
 
-- [ ] 6.1 Define the versioned event envelope and an allowlist of bounded, non-private attributes.
+- [x] 6.1 Define the versioned event envelope and an allowlist of bounded, non-private attributes.
 - [ ] 6.2 Implement transactional event journaling plus paginated run checkpoint and timeline queries.
-- [ ] 6.3 Implement sink-level forbidden-field rejection and tests for logs, collection data, paths, credentials, prompts, and payloads.
+- [x] 6.3 Implement sink-level forbidden-field rejection and tests for logs, collection data, paths, credentials, prompts, and payloads.
 - [ ] 6.4 Implement low-cardinality counters and durations without run, user, card, or deck labels.
 - [ ] 6.5 Implement dry-run replay using pinned graph versions and sanitized fixture references without effect dispatch.
 - [ ] 6.6 Implement age and size retention that preserves active checkpoints and authoritative domain snapshots.
