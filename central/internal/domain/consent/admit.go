@@ -33,6 +33,11 @@ func (a Allowlist) Admit(event string, attrs map[string]string,
 		if err := checkType(kind, value); err != nil {
 			return fmt.Errorf("consent: attr %q: %w", name, err)
 		}
+		if kind == AttrString {
+			if err := Screen(value); err != nil {
+				return fmt.Errorf("consent: attr %q: %w", name, err)
+			}
+		}
 	}
 	return nil
 }

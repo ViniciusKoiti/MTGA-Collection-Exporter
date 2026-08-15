@@ -39,7 +39,7 @@
 
 - [x] 5.1 Define purpose-versioned consent and an allowlist of bounded event names, attributes, types, and retention classes.
 - [ ] 5.2 Add desktop enrollment, durable local outbox, idempotent batch, retry, revocation, and deletion-secret flows behind opt-in.
-- [ ] 5.3 Reject raw logs, collections, decks, paths, prompts, credentials, MTGA identities, unknown fields, and oversized values atomically.
+- [x] 5.3 Reject raw logs, collections, decks, paths, prompts, credentials, MTGA identities, unknown fields, and oversized values atomically.
 - [ ] 5.4 Implement short-lived accepted-event storage, deterministic aggregation, duplicate suppression, and aggregate-only queries.
 - [ ] 5.5 Implement revocation, deletion, tombstones, backup-restore reapplication, and non-identifying completion evidence.
 - [ ] 5.6 Add privacy golden, opt-out-zero-event, sequence, duplicate, out-of-order, backpressure, retention, and deletion tests.
