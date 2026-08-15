@@ -30,7 +30,7 @@
 - [ ] 4.1 Implement approved provider registry, adapter contracts, usage-rights checks, rate limits, and rapid disablement.
 - [ ] 4.2 Implement streaming fetch, decode, normalize, validate, quarantine, and bounded batch persistence stages.
 - [ ] 4.3 Add S3-compatible object storage with immutable keys, compression, SHA-256, upload verification, and cleanup.
-- [ ] 4.4 Add Ed25519 manifest signing, key IDs, trusted-key rotation, dual-sign transition, and revocation tests.
+- [x] 4.4 Add Ed25519 manifest signing, key IDs, trusted-key rotation, dual-sign transition, and revocation tests.
 - [ ] 4.5 Implement staged publication and atomic current-manifest activation with previous-snapshot fallback.
 - [ ] 4.6 Add bounded concurrency, cancellation, backpressure, deterministic reduction, duplicate-run ownership, and goroutine-leak tests.
 - [ ] 4.7 Publish one signed fixture card/meta catalog and verify download, signature, hash, compatibility, and offline fallback from the desktop harness.
