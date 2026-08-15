@@ -18,14 +18,29 @@ type fakeDeps struct {
 	lotes        [][]catalog.Card
 	ativacoes    int
 	proximoGrp   int
+	unsoundGrp   int // this GrpID normalizes into an unsound card
+	quarantined  []catalog.Card
 }
 
 func newFakeDeps(porProvedor int, erroAtivacao error) *fakeDeps {
-	return &fakeDeps{porProvedor: porProvedor, erroAtivacao: erroAtivacao}
+	// GrpIDs start at 1: zero is unsound by the publication validator.
+	return &fakeDeps{porProvedor: porProvedor, erroAtivacao: erroAtivacao,
+		proximoGrp: 1}
 }
 
 func (f *fakeDeps) deps() Deps {
-	return Deps{Fetcher: f, Normalize: f, Writer: f, Objects: f, Signer: f, Activator: f}
+	return Deps{Fetcher: f, Normalize: f, Validator: SoundCard{},
+		Quarantine: f, Writer: f, Objects: f, Signer: f, Activator: f}
+}
+
+// Quarantine records refused cards so tests can assert they left the
+// pipeline without failing the run.
+func (f *fakeDeps) Quarantine(_ context.Context, card catalog.Card,
+	_ string) error {
+	f.mu.Lock()
+	defer f.mu.Unlock()
+	f.quarantined = append(f.quarantined, card)
+	return nil
 }
 
 func (f *fakeDeps) Fetch(_ context.Context, job catalog.ProviderJob) ([]catalog.Observation, error) {
@@ -41,6 +56,9 @@ func (f *fakeDeps) Fetch(_ context.Context, job catalog.ProviderJob) ([]catalog.
 }
 
 func (f *fakeDeps) Normalize(_ context.Context, o catalog.Observation) (catalog.Card, error) {
+	if f.unsoundGrp != 0 && o.GrpID == f.unsoundGrp {
+		return catalog.Card{GrpID: o.GrpID}, nil // no name/set: unsound
+	}
 	return catalog.Card{GrpID: o.GrpID, Name: fmt.Sprintf("card-%d", o.GrpID), Set: "TST"}, nil
 }
 
