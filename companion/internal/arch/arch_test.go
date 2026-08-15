@@ -43,14 +43,16 @@ func TestComandosNaoContornamOInventarioDeAtividades(t *testing.T) {
 	}
 }
 
-// TestWorkflowIndependeDeAdaptadores garante que as definições de workflow
-// não importam Wails, SQLite, PostgreSQL, MCP nem SDKs de modelo: o pacote
-// internal/workflow só pode depender da biblioteca padrão.
-func TestWorkflowIndependeDeAdaptadores(t *testing.T) {
+// TestNucleoIndependeDeAdaptadores garante que workflow e domínio não
+// importam Wails, SQLite, PostgreSQL, MCP nem SDKs de modelo: esses
+// pacotes dependem só da stdlib e de outros pacotes do núcleo — nunca de
+// adapters, testkit ou frontend (tarefas 1.4 do harness e 2.5 do companion).
+func TestNucleoIndependeDeAdaptadores(t *testing.T) {
 	fset := token.NewFileSet()
 	for arquivo := range arquivosGo(t) {
 		normalizado := strings.ReplaceAll(arquivo, "\\", "/")
-		if !strings.Contains(normalizado, "internal/workflow/") {
+		if !strings.Contains(normalizado, "internal/workflow/") &&
+			!strings.Contains(normalizado, "internal/domain/") {
 			continue
 		}
 		tree, err := parser.ParseFile(fset, arquivo, nil, parser.ImportsOnly)
@@ -63,6 +65,11 @@ func TestWorkflowIndependeDeAdaptadores(t *testing.T) {
 				"github.com/ViniciusKoiti/MTGA-Collection-Exporter/companion/")
 			if strings.Contains(caminho, ".") && !proprio { // fora da stdlib e do módulo
 				t.Errorf("%s importa dependência externa proibida: %s", arquivo, caminho)
+			}
+			for _, vetado := range []string{"/internal/adapters/", "/internal/testkit", "/frontend"} {
+				if strings.Contains(caminho, vetado) {
+					t.Errorf("%s: núcleo não pode depender de %s", arquivo, caminho)
+				}
 			}
 		}
 	}
