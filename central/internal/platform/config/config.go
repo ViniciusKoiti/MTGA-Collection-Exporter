@@ -39,6 +39,7 @@ type Config struct {
 	Env          Environment
 	HTTPAddr     string
 	DBSecretRef  string // referência a segredo externo; nunca o valor em si
+	DBDsn        string // DSN resolvido pelo deployment; sempre redigido
 	SignerKeyRef string // referência à chave de assinatura; nunca a chave
 	Budgets      Budgets
 }
@@ -54,6 +55,7 @@ func Load(environ []string) (Config, error) {
 	cfg := Config{
 		HTTPAddr:     take(vars, "CENTRAL_HTTP_ADDR", "127.0.0.1:8080"),
 		DBSecretRef:  take(vars, "CENTRAL_DB_SECRET_REF", ""),
+		DBDsn:        take(vars, "CENTRAL_DB_DSN", ""),
 		SignerKeyRef: take(vars, "CENTRAL_SIGNER_KEY_REF", ""),
 	}
 	env := take(vars, "CENTRAL_ENV", string(EnvDevelopment))
