@@ -34,7 +34,7 @@
 - [x] 4.4 Implement `telemetry-flush` with consent check, minimization, batching, retry, acknowledgement, and local-only fallback.
 - [x] 4.5 Implement `development-scenario` to arrange fixtures, run one target graph, assert evidence, and produce a report.
 - [ ] 4.6 Route Wails commands and background jobs through the activity registry and publish typed progress events.
-- [ ] 4.7 Add golden graph tests for success, validation failure, retry, approval, cancellation, offline mode, and stale catalog paths.
+- [x] 4.7 Add golden graph tests for success, validation failure, retry, approval, cancellation, offline mode, and stale catalog paths.
 
 ## 5. Programmatic Development Harness
 
@@ -69,7 +69,7 @@
 ## 8. Quality And Release Gates
 
 - [x] 8.1 Add a CI check limiting manually maintained Go files to 100 physical lines with only documented generated, migration, lockfile, and fixture exclusions.
-- [ ] 8.2 Run deterministic workflow, harness, policy, replay, race, and forbidden-field tests without MTGA, network, administrator access, or an LLM.
+- [x] 8.2 Run deterministic workflow, harness, policy, replay, race, and forbidden-field tests without MTGA, network, administrator access, or an LLM.
 - [ ] 8.3 Run SQLite and PostgreSQL integration suites with isolated databases and prove production identities are rejected.
 - [ ] 8.4 Run Playwright end-to-end scenarios against Wails progress, approval, cancellation, recovery, and error states.
 - [ ] 8.5 Run local performance, central load, soak, and fault scenarios against the thresholds in `docs/architecture/system-design-tests.md`.
