@@ -41,11 +41,17 @@ func (s *Server) call(ctx context.Context, raw json.RawMessage) (any, *rpcError)
 		}
 		return textResult(strings.Join(names, "\n")), nil
 	case "scenario_execute":
+		if !s.Caps.ScenarioExecute {
+			return nil, &rpcError{Code: -32003, Message: "read-only by default: scenario-execute capability not granted"}
+		}
 		if s.Deps.ExecuteScenario == nil {
 			return nil, toolError("scenario execution not attached")
 		}
 		if params.Arguments.Scenario == "" {
 			return nil, &rpcError{Code: -32602, Message: "scenario is required"}
+		}
+		if !s.Caps.allowsScenario(params.Arguments.Scenario) {
+			return nil, &rpcError{Code: -32003, Message: "scenario outside every isolated namespace"}
 		}
 		report, err := s.Deps.ExecuteScenario(ctx, params.Arguments.Scenario)
 		if err != nil {

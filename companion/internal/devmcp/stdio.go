@@ -28,9 +28,11 @@ type rpcError struct {
 	Message string `json:"message"`
 }
 
-// Server is the dev MCP with its closed five-tool surface.
+// Server is the dev MCP with its closed five-tool surface; without
+// explicit Capabilities it is read-only.
 type Server struct {
 	Deps ToolDeps
+	Caps Capabilities
 }
 
 // ServeStdio runs a dependency-free server: same closed surface, tool

@@ -11,7 +11,8 @@ import (
 )
 
 func wiredServer() *Server {
-	return &Server{Deps: ToolDeps{
+	return &Server{Caps: Capabilities{ScenarioExecute: true,
+		IsolatedNamespaces: []string{"dev"}}, Deps: ToolDeps{
 		ListGraphs: func(context.Context) ([]string, error) {
 			return []string{"collection-sync", "approved-export"}, nil
 		},
@@ -53,21 +54,11 @@ func callTool(t *testing.T, s *Server, body string) map[string]any {
 	return resp
 }
 
-func toolText(t *testing.T, resp map[string]any) string {
-	t.Helper()
-	result, ok := resp["result"].(map[string]any)
-	if !ok {
-		t.Fatalf("expected a result: %v", resp)
-	}
-	content := result["content"].([]any)[0].(map[string]any)
-	return content["text"].(string)
-}
-
 func TestToolsDispatchThroughTheirSources(t *testing.T) {
 	s := wiredServer()
 	calls := map[string]string{
 		`{"jsonrpc":"2.0","id":1,"method":"tools/call","params":{"name":"graphs_list"}}`:                                              "collection-sync\napproved-export",
-		`{"jsonrpc":"2.0","id":2,"method":"tools/call","params":{"name":"scenario_execute","arguments":{"scenario":"export"}}}`:       "scenario export: succeeded",
+		`{"jsonrpc":"2.0","id":2,"method":"tools/call","params":{"name":"scenario_execute","arguments":{"scenario":"dev/export"}}}`:   "scenario dev/export: succeeded",
 		`{"jsonrpc":"2.0","id":3,"method":"tools/call","params":{"name":"run_timeline","arguments":{"run_id":"run-1"}}}`:              "valida ok\nexporta ok",
 		`{"jsonrpc":"2.0","id":4,"method":"tools/call","params":{"name":"events_validate","arguments":{"event":{"kind":"step"}}}}`:    "valid",
 		`{"jsonrpc":"2.0","id":5,"method":"tools/call","params":{"name":"fixtures_diagnose","arguments":{"fixture":"unknown-card"}}}`: "fixture unknown-card: 1 unknown card",
