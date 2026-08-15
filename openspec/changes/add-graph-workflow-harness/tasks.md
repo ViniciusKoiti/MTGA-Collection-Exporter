@@ -70,7 +70,7 @@
 
 - [x] 8.1 Add a CI check limiting manually maintained Go files to 100 physical lines with only documented generated, migration, lockfile, and fixture exclusions.
 - [x] 8.2 Run deterministic workflow, harness, policy, replay, race, and forbidden-field tests without MTGA, network, administrator access, or an LLM.
-- [ ] 8.3 Run SQLite and PostgreSQL integration suites with isolated databases and prove production identities are rejected.
+- [x] 8.3 Run SQLite and PostgreSQL integration suites with isolated databases and prove production identities are rejected.
 - [ ] 8.4 Run Playwright end-to-end scenarios against Wails progress, approval, cancellation, recovery, and error states.
 - [ ] 8.5 Run local performance, central load, soak, and fault scenarios against the thresholds in `docs/architecture/system-design-tests.md`.
 - [ ] 8.6 Inspect release artifacts to prove the development MCP, test credentials, private fixtures, and development configuration are absent.

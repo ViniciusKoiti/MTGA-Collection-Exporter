@@ -45,8 +45,12 @@ type Store struct {
 	db *sql.DB
 }
 
-// Open connects, applies the forward schema and returns the store.
+// Open refuses production identities, connects, applies the forward
+// schema and returns the store.
 func Open(dsn string) (*Store, error) {
+	if err := GuardDSN(dsn); err != nil {
+		return nil, err
+	}
 	db, err := sql.Open("pgx", dsn)
 	if err != nil {
 		return nil, fmt.Errorf("pgstore: open: %w", err)
