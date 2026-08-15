@@ -1,0 +1,59 @@
+@startuml mtga-go-concurrency
+title Bounded Go Pipeline - Catalog Publication
+left to right direction
+skinparam shadowing false
+skinparam componentStyle rectangle
+
+database "PostgreSQL\ndurable jobs + lease" as Jobs
+component "Run owner\ncontext + deadline + errgroup" as Owner
+queue "provider jobs\ncapacity: P" as ProviderJobs
+component "fetch pool\nlimit: provider budget" as Fetch
+queue "observations\ncapacity: O" as Observations
+component "normalize pool\nlimit: CPU budget" as Normalize
+queue "normalized cards\ncapacity: N" as Normalized
+component "stable reducer\nsingle owner" as Reducer
+component "batch writer\nlimit: pgxpool budget" as Writer
+database "PostgreSQL\nversioned catalog" as Catalog
+component "immutable object writer\nlimit: storage budget" as ObjectWriter
+cloud "Object storage / CDN" as Storage
+component "hash + manifest signer" as Signer
+component "atomic activator" as Activator
+
+Jobs --> Owner : claim lease + idempotency key
+Owner --> ProviderJobs : enqueue approved providers
+ProviderJobs --> Fetch
+Fetch --> Observations : send or ctx.Done()
+Observations --> Normalize
+Normalize --> Normalized : send or ctx.Done()
+Normalized --> Reducer : deterministic order
+Reducer --> Writer : bounded batches
+Writer --> Catalog
+Reducer --> ObjectWriter : canonical snapshot
+ObjectWriter --> Storage : immutable object
+ObjectWriter --> Signer : object hash
+Signer --> Activator : signed manifest
+Activator --> Catalog : activate in transaction
+
+Owner ..> Fetch : owns, limits, cancels, waits
+Owner ..> Normalize : owns, limits, cancels, waits
+Owner ..> Writer : owns, limits, cancels, waits
+Owner ..> ObjectWriter : owns, limits, cancels, waits
+Owner ..> Jobs : heartbeat; retryable or terminal outcome
+
+note bottom of Owner
+  First error cancels the shared context.
+  Producers stop on ctx.Done(). Only owners close channels.
+  Completion waits for every owned goroutine.
+end note
+
+note bottom of Reducer
+  Parallel work stops here. Reduction remains single-owner
+  so the published bytes and hash are reproducible.
+end note
+
+legend right
+  P, O and N are configuration limits, not unbounded buffers.
+  Limits derive from provider policy, CPU, pgxpool,
+  object storage and the shutdown deadline.
+endlegend
+@enduml

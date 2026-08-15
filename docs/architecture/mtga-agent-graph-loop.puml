@@ -1,0 +1,37 @@
+@startuml mtga-agent-graph-loop
+title Local Agent Graph - Bounded Execution Loop
+skinparam shadowing false
+
+[*] --> ReceiveIntent
+ReceiveIntent --> LoadLocalContext
+LoadLocalContext --> EnsureCatalog
+EnsureCatalog --> Plan
+Plan --> PolicyCheck
+PolicyCheck --> ExecuteTool : allowlisted read
+PolicyCheck --> AwaitApproval : proposed local effect
+PolicyCheck --> Refused : forbidden capability
+AwaitApproval --> ExecuteTool : exact arguments approved
+AwaitApproval --> Cancelled : declined or expired
+ExecuteTool --> Observe
+Observe --> Evaluate
+Evaluate --> Plan : more work within budget
+Evaluate --> Completed : deterministic goal reached
+Evaluate --> Failed : error, deadline or budget reached
+Refused --> [*]
+Cancelled --> [*]
+Completed --> [*]
+Failed --> [*]
+
+note right of PolicyCheck
+  Initial hard limits:
+  max steps = 8
+  max tool calls = 6
+  same tool + arguments <= 2
+  active run deadline = 30 seconds
+end note
+note right of Observe
+  Persist every transition with run ID,
+  step ID, outcome and redacted evidence.
+  Effects require an idempotency key.
+end note
+@enduml

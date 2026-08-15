@@ -1,0 +1,43 @@
+name: central-go
+
+on:
+  push:
+    paths:
+      - "central/**"
+      - ".github/workflows/central-go.yml"
+  pull_request:
+    paths:
+      - "central/**"
+      - ".github/workflows/central-go.yml"
+
+jobs:
+  quality:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: central
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: central/go.mod
+          cache-dependency-path: central/go.sum
+
+      - name: Formatação (gofmt)
+        run: test -z "$(gofmt -l .)"
+
+      - name: Análise estática (go vet)
+        run: go vet ./...
+
+      - name: Análise estática (staticcheck)
+        run: go run honnef.co/go/tools/cmd/staticcheck@latest ./...
+
+      - name: Build
+        run: go build ./...
+
+      - name: Testes com detector de corrida
+        run: go test -race -count=1 ./...
+
+      - name: Vulnerabilidades (govulncheck)
+        run: go run golang.org/x/vuln/cmd/govulncheck@latest ./...
