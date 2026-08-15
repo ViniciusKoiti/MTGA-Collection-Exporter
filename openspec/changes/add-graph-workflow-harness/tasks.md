@@ -44,7 +44,7 @@
 - [x] 5.4 Implement latency, timeout, malformed-response, disconnect, and checkpoint-crash fault decorators.
 - [x] 5.5 Implement ordered transition, outcome, attempt, effect, budget, database, redaction, and forbidden-behavior assertions.
 - [ ] 5.6 Add sanitized small, large, malformed, duplicate-printing, unknown-card, and nearly-buildable-deck fixtures.
-- [ ] 5.7 Enforce deterministic, integration, end-to-end, staging, and provider-smoke trust profiles and network allowlists.
+- [x] 5.7 Enforce deterministic, integration, end-to-end, staging, and provider-smoke trust profiles and network allowlists.
 - [x] 5.8 Add repeatability tests proving identical normalized evidence for the same deterministic scenario and seed.
 
 ## 6. Workflow Observability
