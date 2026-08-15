@@ -5,6 +5,7 @@ import (
 	"time"
 
 	wf "github.com/ViniciusKoiti/MTGA-Collection-Exporter/companion/internal/workflow"
+	"github.com/ViniciusKoiti/MTGA-Collection-Exporter/companion/internal/workflow/memory"
 )
 
 type noFn struct {
@@ -25,7 +26,7 @@ func (aprovaTudo) Decide(context.Context, wf.Identity, wf.EffectPreview) (wf.Pol
 
 // cenarioExport monta o grafo de produção com um efeito que exige aprovação.
 func cenarioExport(conceder bool) Scenario {
-	registrar := func(r *wf.Registry) error {
+	registrar := func(r *wf.Registry, _ *memory.Clock) error {
 		exporta := noFn{"exporta", func(ctx context.Context, st wf.State) (wf.State, wf.OutcomeCode, error) {
 			preview := wf.EffectPreview{Effect: "export-write", Target: "decks/a.txt", PayloadHash: "h1"}
 			if err := wf.RequestEffect(ctx, preview); err != nil {

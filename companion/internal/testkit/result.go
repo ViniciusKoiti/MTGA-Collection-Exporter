@@ -7,12 +7,35 @@ import (
 	wf "github.com/ViniciusKoiti/MTGA-Collection-Exporter/companion/internal/workflow"
 )
 
-// Result reúne o desfecho persistido, o journal de steps e o erro tipado
-// devolvido pelo engine (nil em sucesso).
+// Result reúne o desfecho persistido, o journal de steps, a trilha de
+// eventos validados e o erro tipado devolvido pelo engine (nil em sucesso).
 type Result struct {
-	Run   wf.Run
-	Steps []wf.Step
-	Err   error
+	Run    wf.Run
+	Steps  []wf.Step
+	Events []wf.Event
+	Err    error
+}
+
+// AssertEventos valida a quantidade de eventos emitidos e o envelope de
+// cada um (schema versionado + correlação do run).
+func (r Result) AssertEventos(quantidade int) error {
+	if len(r.Events) != quantidade {
+		return fmt.Errorf("testkit: %d eventos, esperava %d", len(r.Events), quantidade)
+	}
+	for i, ev := range r.Events {
+		if ev.Schema != wf.EventSchema || ev.Correlation != string(r.Run.ID) {
+			return fmt.Errorf("testkit: evento %d fora do envelope: %+v", i, ev)
+		}
+	}
+	return nil
+}
+
+// AssertOrcamento garante que a execução coube no orçamento de passos.
+func (r Result) AssertOrcamento(maxSteps int) error {
+	if len(r.Steps) > maxSteps {
+		return fmt.Errorf("testkit: %d steps excedem o orçamento de %d", len(r.Steps), maxSteps)
+	}
+	return nil
 }
 
 // Evidence produz a evidência normalizada e determinística do run: sequência
