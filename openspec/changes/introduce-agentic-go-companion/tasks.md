@@ -49,7 +49,7 @@
 ## 6. Agent Tools And Legacy Compatibility
 
 - [x] 6.1 Implement the typed tool registry with JSON schemas, argument limits, bounded result pagination, cancellation, and correlation IDs.
-- [ ] 6.2 Implement default-deny policy classification, exact argument-bound approval tokens, expiration, single-use execution, and denial tests.
+- [x] 6.2 Implement default-deny policy classification, exact argument-bound approval tokens, expiration, single-use execution, and denial tests.
 - [x] 6.3 Implement redacted audit storage and an Assistant activity view for requested, approved, executed, failed, and denied tools.
 - [x] 6.4 Expose read tools for sync status, collection summary/search, card lookup, deck validation, and ownership gaps to the in-app assistant and development harness without shipping a product MCP.
 - [ ] 6.5 Expose preview-only proposals for save, sync, file export, and clipboard export, requiring approval before execution.
