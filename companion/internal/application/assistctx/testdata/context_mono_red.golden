@@ -1,0 +1,8 @@
+context|assistant/v1
+sync|fresh|snapshot=snap-1|cards=245
+question|how do I finish this deck?
+deck|Mono Red|main=2|side=0
+card|4|Lightning Strike
+card|20|Mountain
+ownership|missing=2|complete=false
+gap|2|Lightning Strike
