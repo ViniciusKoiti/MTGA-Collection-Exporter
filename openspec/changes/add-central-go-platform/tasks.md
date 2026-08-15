@@ -22,7 +22,7 @@
 - [x] 3.3 Implement public manifest and compatibility endpoints with ETag, immutable cache, bounded in-process cache, and singleflight.
 - [x] 3.4 Implement installation enrollment, token hashing, consent receipt, credential rotation, revocation, and deletion endpoints.
 - [x] 3.5 Implement telemetry batch ingestion with atomic schema validation, installation scope, idempotency, sequence, and admission control.
-- [ ] 3.6 Implement separately authenticated operations status, catalog, job, deletion, and audit endpoints without generic SQL or mutation tools.
+- [x] 3.6 Implement separately authenticated operations status, catalog, job, deletion, and audit endpoints without generic SQL or mutation tools.
 - [ ] 3.7 Add contract, fuzz, timeout, cancellation, unknown-field, oversized, compressed-bomb, authorization, and idempotency tests.
 
 ## 4. Catalog Publication
