@@ -3,6 +3,7 @@ package memory
 import (
 	"context"
 	"fmt"
+	"sort"
 	"sync"
 	"time"
 
@@ -57,6 +58,21 @@ func (s *Approvals) Decide(
 	ap.ExpiresAt = expiresAt
 	s.itens[chave] = ap
 	return nil
+}
+
+// Pendentes lista as solicitações ainda não decididas de um run; método do
+// adapter (fora do port) usado pelo harness para aplicar decisões previstas.
+func (s *Approvals) Pendentes(run workflow.RunID) []workflow.Approval {
+	s.mu.Lock()
+	defer s.mu.Unlock()
+	var pendentes []workflow.Approval
+	for chave, ap := range s.itens {
+		if chave.run == run && !ap.Decided {
+			pendentes = append(pendentes, ap)
+		}
+	}
+	sort.Slice(pendentes, func(i, j int) bool { return pendentes[i].Hash < pendentes[j].Hash })
+	return pendentes
 }
 
 // Get devolve a solicitação e se ela existe.

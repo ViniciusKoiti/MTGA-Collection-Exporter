@@ -27,13 +27,29 @@ func (e *Engine) registraStep(
 		Finished: fim,
 	}
 	if execErr != nil {
-		step.Err = string(OutcomeNodeError)
-		if errors.Is(execErr, ErrLimitExceeded) {
-			step.Err = string(OutcomeToolLimit)
-		}
+		step.Err = codigoEstavel(execErr)
 	}
 	if err := e.store.AppendStep(ctx, step); err != nil {
 		return fmt.Errorf("workflow: falha ao registrar step: %w", err)
 	}
 	return nil
+}
+
+// codigoEstavel traduz o erro tipado da tentativa em código estável de
+// evidência; o texto da mensagem nunca vai para o journal.
+func codigoEstavel(execErr error) string {
+	switch {
+	case errors.Is(execErr, ErrApprovalPending):
+		return "approval_pending"
+	case errors.Is(execErr, ErrPolicyDenied):
+		return string(OutcomePolicyDenied)
+	case errors.Is(execErr, ErrApprovalExpired):
+		return string(OutcomeApprovalExpired)
+	case errors.Is(execErr, ErrPayloadExceeded):
+		return string(OutcomePayloadLimit)
+	case errors.Is(execErr, ErrLimitExceeded):
+		return string(OutcomeToolLimit)
+	default:
+		return string(OutcomeNodeError)
+	}
 }
