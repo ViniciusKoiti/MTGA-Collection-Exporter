@@ -13,7 +13,7 @@
 - [x] 2.3 Configure `pgxpool` budgets, acquisition/query timeouts, health metrics, and maximum replicas from reserved database capacity.
 - [ ] 2.4 Add `sqlc` typed queries and repository adapters with transaction, cancellation, and stable error mapping.
 - [x] 2.5 Implement the dedicated migration command with lock, compatibility, preflight, verification, and API readiness refusal.
-- [ ] 2.6 Add repository and RLS contract suites for cross-principal denial, idempotency, retention, and concurrency.
+- [x] 2.6 Add repository and RLS contract suites for cross-principal denial, idempotency, retention, and concurrency.
 
 ## 3. HTTP API
 
