@@ -20,8 +20,8 @@
 
 - [x] 3.1 Add SQLite migrations for graph identities, runs, steps, approvals, leases, idempotency keys, events, and outbox records.
 - [x] 3.2 Implement transactional checkpoint and outbox writes with optimistic run versions.
-- [ ] 3.3 Implement bounded leases, restart recovery, incompatible-version handling, and abandoned-run cleanup.
-- [ ] 3.4 Implement idempotent effect dispatch and acknowledgement around every pre- and post-effect crash point.
+- [x] 3.3 Implement bounded leases, restart recovery, incompatible-version handling, and abandoned-run cleanup.
+- [x] 3.4 Implement idempotent effect dispatch and acknowledgement around every pre- and post-effect crash point.
 - [x] 3.5 Create a reusable run-store contract suite and execute it against in-memory and SQLite adapters.
 - [ ] 3.6 Add a development/staging PostgreSQL run-store adapter and pass the same contract suite with Testcontainers.
 - [ ] 3.7 Add migration, backup, rollback, corrupt-checkpoint, dual-worker, and crash-recovery integration tests.

@@ -11,16 +11,18 @@ import (
 // RunStore guarda checkpoints e steps em memória com a mesma semântica de
 // versão otimista exigida do adapter SQLite (contrato RunStore).
 type RunStore struct {
-	mu    sync.Mutex
-	runs  map[workflow.RunID]workflow.Run
-	steps map[workflow.RunID][]workflow.Step
+	mu     sync.Mutex
+	runs   map[workflow.RunID]workflow.Run
+	steps  map[workflow.RunID][]workflow.Step
+	leases map[workflow.RunID]lease
 }
 
 // NewRunStore cria o store vazio.
 func NewRunStore() *RunStore {
 	return &RunStore{
-		runs:  make(map[workflow.RunID]workflow.Run),
-		steps: make(map[workflow.RunID][]workflow.Step),
+		runs:   make(map[workflow.RunID]workflow.Run),
+		steps:  make(map[workflow.RunID][]workflow.Step),
+		leases: make(map[workflow.RunID]lease),
 	}
 }
 
