@@ -23,7 +23,7 @@
 - [x] 3.4 Implement installation enrollment, token hashing, consent receipt, credential rotation, revocation, and deletion endpoints.
 - [x] 3.5 Implement telemetry batch ingestion with atomic schema validation, installation scope, idempotency, sequence, and admission control.
 - [x] 3.6 Implement separately authenticated operations status, catalog, job, deletion, and audit endpoints without generic SQL or mutation tools.
-- [ ] 3.7 Add contract, fuzz, timeout, cancellation, unknown-field, oversized, compressed-bomb, authorization, and idempotency tests.
+- [x] 3.7 Add contract, fuzz, timeout, cancellation, unknown-field, oversized, compressed-bomb, authorization, and idempotency tests.
 
 ## 4. Catalog Publication
 
