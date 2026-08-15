@@ -32,7 +32,7 @@
 - [ ] 4.3 Add S3-compatible object storage with immutable keys, compression, SHA-256, upload verification, and cleanup.
 - [x] 4.4 Add Ed25519 manifest signing, key IDs, trusted-key rotation, dual-sign transition, and revocation tests.
 - [x] 4.5 Implement staged publication and atomic current-manifest activation with previous-snapshot fallback. (CI proof: internal/postgres 37.933s incl. activator suite, run 31913917508)
-- [ ] 4.6 Add bounded concurrency, cancellation, backpressure, deterministic reduction, duplicate-run ownership, and goroutine-leak tests.
+- [x] 4.6 Add bounded concurrency, cancellation, backpressure, deterministic reduction, duplicate-run ownership, and goroutine-leak tests.
 - [ ] 4.7 Publish one signed fixture card/meta catalog and verify download, signature, hash, compatibility, and offline fallback from the desktop harness.
 
 ## 5. Consented Telemetry
