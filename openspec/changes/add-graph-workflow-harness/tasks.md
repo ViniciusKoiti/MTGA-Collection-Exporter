@@ -1,7 +1,7 @@
 ## 1. Architecture Prerequisites
 
 - [x] 1.1 Revise the companion change so its new MCP is development-only and the current Python MCP is documented as legacy compatibility.
-- [ ] 1.2 Verify the companion Go domain, application, policy, and storage ports exist before adding workflow adapters.
+- [x] 1.2 Verify the companion Go domain, application, policy, and storage ports exist before adding workflow adapters.
 - [x] 1.3 Create an activity inventory mapping every external command and scheduled job to a graph kind or a documented pure-query exemption.
 - [x] 1.4 Add package dependency tests that keep workflow definitions independent from Wails, SQLite, PostgreSQL, MCP, and model SDKs.
 
