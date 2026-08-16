@@ -60,7 +60,7 @@
 - [x] 7.3 Implement signal-driven shutdown that fails readiness, stops claims, cancels producers, drains workers, checkpoints, stops HTTP, and closes pools.
 - [x] 7.4 Define per-table purpose, classification, retention, deletion, backup, restore, legal hold, and owner documentation.
 - [ ] 7.5 Integrate external secret references, rotation tests, container non-root user, read-only filesystem, and restricted network policy.
-- [ ] 7.6 Add encrypted backup verification and an isolated restore drill meeting RPO, RTO, migrations, tombstones, and smoke checks.
+- [x] 7.6 Add encrypted backup verification and an isolated restore drill meeting RPO, RTO, migrations, tombstones, and smoke checks. (CI proof: run 31965211330, internal/postgres 45.752s — pg_dump inside the source container, AES-256-GCM roundtrip with plaintext provably absent from the ciphertext, data-only replay into a fresh container after the migrator built schema+roles (the documented restore ordering), migrator preflight on the restored database, tombstone reapplication killing a simulated backup remnant, smoke checks on surviving rows, all under a 3-minute RTO budget.)
 - [x] 7.7 Add incident runbooks for database saturation, provider failure, signing key compromise, bad catalog, privacy request, and rollback.
 
 ## 8. Scale And Release Gates
