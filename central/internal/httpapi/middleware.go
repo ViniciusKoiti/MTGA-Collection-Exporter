@@ -54,3 +54,19 @@ func Chain(h http.Handler, outer ...func(http.Handler) http.Handler) http.Handle
 	}
 	return h
 }
+
+// WithFeature refuses requests while the feature is off (task 8.7):
+// a rollback is one flag flip away and needs no deploy. The check
+// runs per request so the flip is effective immediately.
+func WithFeature(enabled func() bool) func(http.Handler) http.Handler {
+	return func(next http.Handler) http.Handler {
+		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+			if !enabled() {
+				WriteError(w, r, http.StatusServiceUnavailable,
+					"feature_disabled", "this capability is not enabled")
+				return
+			}
+			next.ServeHTTP(w, r)
+		})
+	}
+}

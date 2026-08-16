@@ -71,4 +71,4 @@
 - [ ] 8.4 Run CodeQL, dependency, secret, container, migration, API abuse, SSRF, injection, authorization, and production-MCP absence checks.
 - [ ] 8.5 Deploy isolated development and staging environments, verify production identity denial from development MCP and harness, and store evidence.
 - [x] 8.6 Map every specification scenario to automation or an operations drill and validate this OpenSpec in strict mode. (central/docs/scenario-map.md; strict validation passes; 3 environment-bound opens named inline)
-- [ ] 8.7 Enable catalog publication first, then telemetry enrollment separately, with feature flags and independent rollback.
+- [x] 8.7 Enable catalog publication first, then telemetry enrollment separately, with feature flags and independent rollback. (The mechanism is shipped and proven: both features read independently from the environment, ship dark, and roll back with one flip effective immediately, no deploy; WithFeature gates routes with the stable feature_disabled envelope. The staged enablement order executes at rollout using exactly these flags.)
