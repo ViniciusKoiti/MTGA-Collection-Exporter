@@ -68,6 +68,11 @@ function render(views: View[], active: string): void {
       location.hash = button.dataset.view!;
     });
   });
+  // Re-rendering destroys focus; restore it on the active view's
+  // button so keyboard users never fall back to the document body.
+  if (document.activeElement === document.body) {
+    app.querySelector<HTMLButtonElement>('button[aria-current="page"]')?.focus();
+  }
   // Keyboard navigation (task 4.6): arrows move through the nav,
   // Home/End jump, Enter/Space activate (native button behavior).
   const navElement = app.querySelector<HTMLElement>('nav')!;

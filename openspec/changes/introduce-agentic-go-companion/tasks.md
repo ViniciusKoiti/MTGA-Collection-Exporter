@@ -62,7 +62,7 @@
 
 - [x] 7.1 Add telemetry-free structured local logs for sync and tool calls plus a redacted diagnostic-bundle exporter with explicit opt-in fields.
 - [x] 7.2 Add migration backup, forward migration, and export-based recovery tests for the local database.
-- [ ] 7.3 Run fixture, unit, contract, race, frontend, accessibility, and end-to-end suites in CI without MTGA, network, administrator privileges, or an LLM.
+- [x] 7.3 Run fixture, unit, contract, race, frontend, accessibility, and end-to-end suites in CI without MTGA, network, administrator privileges, or an LLM. (go-modules runs it all per push: fixture suites (detailedlogs/testkit), unit+contract+race across both modules, the vitest component suite, the accessibility gate in arch, and the Playwright shell e2e against vite preview — no game, no external network, no admin, no model anywhere.)
 - [ ] 7.4 Build and smoke-test the Go desktop on a clean Windows environment, including offline startup and WebView dependency handling, and prove no development MCP is packaged.
 - [ ] 7.5 Execute a multi-snapshot parity trial between accepted Detailed Logs, the Python exporter, and Go normalization before enabling log sync by default.
 - [x] 7.6 Update user documentation with source trust, privacy, permissions, recovery, compatibility, and clear statements that the companion does not automate gameplay.

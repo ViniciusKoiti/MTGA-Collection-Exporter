@@ -66,3 +66,9 @@ jobs:
 
       - name: Component tests (vitest, primary flows)
         run: npm test
+
+      - name: Install Playwright Chromium
+        run: npx playwright install --with-deps chromium
+
+      - name: End-to-end tests (shell navigation and fallbacks)
+        run: npm run e2e
