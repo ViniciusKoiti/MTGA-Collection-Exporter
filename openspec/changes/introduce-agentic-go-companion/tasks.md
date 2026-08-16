@@ -1,8 +1,8 @@
 ## 1. Discovery And Safety Gates
 
 - [x] 1.1 Create sanitized golden fixtures for the current Python JSON export, including duplicate printings, unknown cards, empty data, and malformed data.
-- [ ] 1.2 Capture sanitized Detailed Logs fixtures from the current MTG Arena client and document whether a complete collection payload can be detected reliably.
-- [ ] 1.3 Add a fixture-based decision test that enables the log source only for recognized payload versions and falls back to explicit import otherwise.
+- [x] 1.2 Capture sanitized Detailed Logs fixtures from the current MTG Arena client and document whether a complete collection payload can be detected reliably. (Finding from 3 real sessions of the 2026-08 client with Detailed Logs on and the collection screen opened: the log carries inventory currencies, deck summaries, rank, quests and match traffic, but NO complete grpId→count payload and no PlayerInventory.GetPlayerCards* method — detection is NOT reliable. Sanitized fixtures in companion/internal/adapters/detailedlogs/testdata.)
+- [x] 1.3 Add a fixture-based decision test that enables the log source only for recognized payload versions and falls back to explicit import otherwise. (DecideSource + empty-on-purpose RecognizedPayloadVersions allowlist; the real capture falls back to explicit import, a hypothetical v3 capture enables logs only when its version is recognized, and a sanitization gate proves no real GUID ships.)
 - [ ] 1.4 Run a Windows packaging spike for stable Wails and candidate `database/sql` SQLite drivers; record binary, WebView, migration, and clean-machine results.
 - [x] 1.5 Document the integration policy matrix for allowed read operations, approval-required local effects, and prohibited MTGA control operations.
 
