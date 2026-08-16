@@ -33,7 +33,9 @@ func server(t *testing.T, failures *atomic.Int32) *httptest.Server {
 	mux.HandleFunc("/cards", func(w http.ResponseWriter, _ *http.Request) {
 		fmt.Fprint(w, `[
 			{"id":"p1","oracle_id":"o1","name":"Lightning Strike","set":"dmu",
-			 "collector_number":"137","arena_id":82183},
+			 "collector_number":"137","arena_id":82183,
+			 "colors":["R"],"cmc":2.0,"type_line":"Instant",
+			 "legalities":{"standard":"legal","modern":"legal","pauper":"not_legal"}},
 			{"id":"p2","oracle_id":"o2","name":"Paper Only Card","set":"xxx",
 			 "collector_number":"1","arena_id":0}
 		]`)

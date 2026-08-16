@@ -21,14 +21,19 @@ type bulkEntry struct {
 	DownloadURI string `json:"download_uri"`
 }
 
-// bulkCard is the minimal per-card shape of the default_cards bulk file.
+// bulkCard is the minimal per-card shape of the default_cards bulk
+// file, plus the metadata substitutions need (companion task 5.6).
 type bulkCard struct {
-	ID              string `json:"id"`
-	OracleID        string `json:"oracle_id"`
-	Name            string `json:"name"`
-	Set             string `json:"set"`
-	CollectorNumber string `json:"collector_number"`
-	ArenaID         int    `json:"arena_id"`
+	ID              string            `json:"id"`
+	OracleID        string            `json:"oracle_id"`
+	Name            string            `json:"name"`
+	Set             string            `json:"set"`
+	CollectorNumber string            `json:"collector_number"`
+	ArenaID         int               `json:"arena_id"`
+	Colors          []string          `json:"colors"`
+	Cmc             float64           `json:"cmc"`
+	TypeLine        string            `json:"type_line"`
+	Legalities      map[string]string `json:"legalities"`
 }
 
 // identity maps a bulk card to the domain identity; cards without an

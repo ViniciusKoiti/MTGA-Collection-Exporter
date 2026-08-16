@@ -9,6 +9,7 @@ import (
 	"strings"
 
 	"github.com/ViniciusKoiti/MTGA-Collection-Exporter/companion/internal/domain/collection"
+	"github.com/ViniciusKoiti/MTGA-Collection-Exporter/companion/internal/domain/decks"
 	"github.com/ViniciusKoiti/MTGA-Collection-Exporter/companion/internal/ports"
 )
 
@@ -19,10 +20,11 @@ const (
 
 // Catalog resolves identities from the cached bulk data.
 type Catalog struct {
-	byArena map[collection.ArenaID]collection.CardIdentity
-	byName  map[string]collection.CardIdentity
-	Meta    Metadata
-	Stale   bool // true when served by the offline fallback
+	byArena   map[collection.ArenaID]collection.CardIdentity
+	byName    map[string]collection.CardIdentity
+	byProfile map[string]decks.CardProfile
+	Meta      Metadata
+	Stale     bool // true when served by the offline fallback
 }
 
 var _ ports.Catalog = (*Catalog)(nil)
@@ -79,14 +81,18 @@ func loadCache(dir string) (*Catalog, error) {
 		return nil, fmt.Errorf("scryfall: corrupted cache: %w", err)
 	}
 	catalog := &Catalog{Meta: meta,
-		byArena: make(map[collection.ArenaID]collection.CardIdentity, len(cards)),
-		byName:  make(map[string]collection.CardIdentity, len(cards))}
+		byArena:   make(map[collection.ArenaID]collection.CardIdentity, len(cards)),
+		byName:    make(map[string]collection.CardIdentity, len(cards)),
+		byProfile: make(map[string]decks.CardProfile, len(cards))}
 	for _, card := range cards {
 		identity := card.identity()
 		if card.ArenaID != 0 {
 			catalog.byArena[identity.Arena] = identity
 		}
 		catalog.byName[strings.ToLower(card.Name)] = identity
+		if profile, ok := card.profile(); ok {
+			catalog.byProfile[strings.ToLower(card.Name)] = profile
+		}
 	}
 	return catalog, nil
 }
