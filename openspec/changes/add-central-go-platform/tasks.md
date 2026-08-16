@@ -42,7 +42,7 @@
 - [x] 5.3 Reject raw logs, collections, decks, paths, prompts, credentials, MTGA identities, unknown fields, and oversized values atomically.
 - [x] 5.4 Implement short-lived accepted-event storage, deterministic aggregation, duplicate suppression, and aggregate-only queries. (CI proof: internal/postgres 42.980s incl. aggregation suite, run 31914894289)
 - [ ] 5.5 Implement revocation, deletion, tombstones, backup-restore reapplication, and non-identifying completion evidence.
-- [ ] 5.6 Add privacy golden, opt-out-zero-event, sequence, duplicate, out-of-order, backpressure, retention, and deletion tests.
+- [x] 5.6 Add privacy golden, opt-out-zero-event, sequence, duplicate, out-of-order, backpressure, retention, and deletion tests.
 
 ## 6. Durable Jobs And Go Concurrency
 

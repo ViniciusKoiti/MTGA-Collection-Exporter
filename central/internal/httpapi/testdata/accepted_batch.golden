@@ -1,0 +1,14 @@
+[
+  {
+    "Name": "scan_completed",
+    "Attrs": {
+      "result": "ok"
+    }
+  },
+  {
+    "Name": "export_written",
+    "Attrs": {
+      "format": "json"
+    }
+  }
+]
