@@ -30,6 +30,10 @@ export function ImportCollection() {
   return window['go']['main']['App']['ImportCollection']();
 }
 
+export function ImportCollectionFrom(arg1) {
+  return window['go']['main']['App']['ImportCollectionFrom'](arg1);
+}
+
 export function SaveDeckRevision(arg1, arg2) {
   return window['go']['main']['App']['SaveDeckRevision'](arg1, arg2);
 }

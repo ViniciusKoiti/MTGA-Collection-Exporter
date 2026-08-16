@@ -71,7 +71,7 @@
 - [x] 8.1 Add a CI check limiting manually maintained Go files to 100 physical lines with only documented generated, migration, lockfile, and fixture exclusions.
 - [x] 8.2 Run deterministic workflow, harness, policy, replay, race, and forbidden-field tests without MTGA, network, administrator access, or an LLM.
 - [x] 8.3 Run SQLite and PostgreSQL integration suites with isolated databases and prove production identities are rejected.
-- [ ] 8.4 Run Playwright end-to-end scenarios against Wails progress, approval, cancellation, recovery, and error states.
+- [ ] 8.4 Run Playwright end-to-end scenarios against Wails progress, approval, cancellation, recovery, and error states. (The runtime harness now EXISTS: Playwright attaches to the real app via `wails dev` (e2e-runtime suite, 4/4 green) and the progress-event path is exercised by the real import. OPEN for the approval, cancellation, recovery and error scenarios, which need approval-gated graphs wired into the desktop first.)
 - [ ] 8.5 Run local performance, central load, soak, and fault scenarios against the thresholds in `docs/architecture/system-design-tests.md`.
 - [x] 8.6 Inspect release artifacts to prove the development MCP, test credentials, private fixtures, and development configuration are absent. (scripts/inspect_release.ps1 gates the packaging workflow between build and upload; proven locally against clean and contaminated zips — the CI proof lands on the next v* tag or workflow_dispatch.)
 - [x] 8.7 Map every specification scenario to an automated test or a documented Windows-only manual verification. (companion/docs/scenario-map.md; 2 honest partials noted inline)

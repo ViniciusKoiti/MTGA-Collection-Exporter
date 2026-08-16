@@ -20,6 +20,8 @@ export function Home():Promise<homesvc.Model>;
 
 export function ImportCollection():Promise<main.ImportResult>;
 
+export function ImportCollectionFrom(arg1:string):Promise<main.ImportResult>;
+
 export function SaveDeckRevision(arg1:string,arg2:string):Promise<viewstate.State>;
 
 export function SuggestSubstitutions(arg1:string,arg2:string):Promise<main.SubstitutionReport>;

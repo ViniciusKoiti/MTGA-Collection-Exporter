@@ -21,9 +21,7 @@ type ImportResult struct {
 	State      viewstate.State `json:"state"`
 }
 
-// ImportCollection asks for a legacy JSON export and runs the
-// collection-sync graph THROUGH the activity registry — Wails
-// commands never touch the workflow engine directly (task 4.6).
+// ImportCollection asks for a legacy JSON export and runs the import.
 func (a *App) ImportCollection() ImportResult {
 	path, err := runtime.OpenFileDialog(a.ctx, runtime.OpenDialogOptions{
 		Title: "Import your MTGA collection export",
@@ -35,6 +33,15 @@ func (a *App) ImportCollection() ImportResult {
 	if path == "" {
 		return ImportResult{State: viewstate.Empty()} // user cancelled
 	}
+	return a.ImportCollectionFrom(path)
+}
+
+// ImportCollectionFrom runs the collection-sync graph for one export
+// file THROUGH the activity registry — Wails commands never touch the
+// workflow engine directly (task 4.6). The path-taking form exists so
+// the runtime end-to-end suite can drive the flow without the native
+// file dialog.
+func (a *App) ImportCollectionFrom(path string) ImportResult {
 	launcher, err := a.launcherFor(path)
 	if err != nil {
 		return ImportResult{State: viewstate.FromError(err)}
