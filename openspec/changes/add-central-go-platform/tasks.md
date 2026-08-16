@@ -33,7 +33,7 @@
 - [x] 4.4 Add Ed25519 manifest signing, key IDs, trusted-key rotation, dual-sign transition, and revocation tests.
 - [x] 4.5 Implement staged publication and atomic current-manifest activation with previous-snapshot fallback. (CI proof: internal/postgres 37.933s incl. activator suite, run 31913917508)
 - [x] 4.6 Add bounded concurrency, cancellation, backpressure, deterministic reduction, duplicate-run ownership, and goroutine-leak tests.
-- [ ] 4.7 Publish one signed fixture card/meta catalog and verify download, signature, hash, compatibility, and offline fallback from the desktop harness. (Central half proven end-to-end: publish through real S3+Ed25519 adapters, client-side download/hash/signature/compatibility checks and tamper rejection in e2e_test.go; OPEN for the desktop-harness consumption + offline fallback, which lives on the companion side.)
+- [x] 4.7 Publish one signed fixture card/meta catalog and verify download, signature, hash, compatibility, and offline fallback from the desktop harness. (Central half: e2e publish through real S3+Ed25519 adapters with client-side checks and tamper rejection. Desktop half: companion catalogclient verifies key/signature/hash/size/schema over the wire contract, caches only verified catalogs, and falls back to the cached one — marked stale — on network death or any verification failure.)
 
 ## 5. Consented Telemetry
 
