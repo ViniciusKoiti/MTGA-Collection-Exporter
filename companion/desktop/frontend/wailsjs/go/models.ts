@@ -1,3 +1,108 @@
+export namespace collectionsvc {
+	
+	export class Change {
+	    key: string;
+	    name: string;
+	    set: string;
+	    before: number;
+	    after: number;
+	
+	    static createFrom(source: any = {}) {
+	        return new Change(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.key = source["key"];
+	        this.name = source["name"];
+	        this.set = source["set"];
+	        this.before = source["before"];
+	        this.after = source["after"];
+	    }
+	}
+	export class Diff {
+	    total_before: number;
+	    total_after: number;
+	    changes: Change[];
+	
+	    static createFrom(source: any = {}) {
+	        return new Diff(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.total_before = source["total_before"];
+	        this.total_after = source["total_after"];
+	        this.changes = this.convertValues(source["changes"], Change);
+	    }
+	
+		convertValues(a: any, classs: any, asMap: boolean = false): any {
+		    if (!a) {
+		        return a;
+		    }
+		    if (a.slice && a.map) {
+		        return (a as any[]).map(elem => this.convertValues(elem, classs));
+		    } else if ("object" === typeof a) {
+		        if (asMap) {
+		            for (const key of Object.keys(a)) {
+		                a[key] = new classs(a[key]);
+		            }
+		            return a;
+		        }
+		        return new classs(a);
+		    }
+		    return a;
+		}
+	}
+	export class Query {
+	    text: string;
+	    set: string;
+	    unresolved_only: boolean;
+	    min_quantity: number;
+	    sort: string;
+	
+	    static createFrom(source: any = {}) {
+	        return new Query(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.text = source["text"];
+	        this.set = source["set"];
+	        this.unresolved_only = source["unresolved_only"];
+	        this.min_quantity = source["min_quantity"];
+	        this.sort = source["sort"];
+	    }
+	}
+	export class Row {
+	    printing: string;
+	    name: string;
+	    set: string;
+	    quantity: number;
+	    unresolved: boolean;
+	    raw?: string;
+	    oracle?: string;
+	    arena?: number;
+	
+	    static createFrom(source: any = {}) {
+	        return new Row(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.printing = source["printing"];
+	        this.name = source["name"];
+	        this.set = source["set"];
+	        this.quantity = source["quantity"];
+	        this.unresolved = source["unresolved"];
+	        this.raw = source["raw"];
+	        this.oracle = source["oracle"];
+	        this.arena = source["arena"];
+	    }
+	}
+
+}
+
 export namespace homesvc {
 	
 	export class Action {
@@ -63,6 +168,70 @@ export namespace homesvc {
 
 export namespace main {
 	
+	export class CollectionDiff {
+	    diff: collectionsvc.Diff;
+	    state: viewstate.State;
+	
+	    static createFrom(source: any = {}) {
+	        return new CollectionDiff(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.diff = this.convertValues(source["diff"], collectionsvc.Diff);
+	        this.state = this.convertValues(source["state"], viewstate.State);
+	    }
+	
+		convertValues(a: any, classs: any, asMap: boolean = false): any {
+		    if (!a) {
+		        return a;
+		    }
+		    if (a.slice && a.map) {
+		        return (a as any[]).map(elem => this.convertValues(elem, classs));
+		    } else if ("object" === typeof a) {
+		        if (asMap) {
+		            for (const key of Object.keys(a)) {
+		                a[key] = new classs(a[key]);
+		            }
+		            return a;
+		        }
+		        return new classs(a);
+		    }
+		    return a;
+		}
+	}
+	export class CollectionPage {
+	    rows: collectionsvc.Row[];
+	    state: viewstate.State;
+	
+	    static createFrom(source: any = {}) {
+	        return new CollectionPage(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.rows = this.convertValues(source["rows"], collectionsvc.Row);
+	        this.state = this.convertValues(source["state"], viewstate.State);
+	    }
+	
+		convertValues(a: any, classs: any, asMap: boolean = false): any {
+		    if (!a) {
+		        return a;
+		    }
+		    if (a.slice && a.map) {
+		        return (a as any[]).map(elem => this.convertValues(elem, classs));
+		    } else if ("object" === typeof a) {
+		        if (asMap) {
+		            for (const key of Object.keys(a)) {
+		                a[key] = new classs(a[key]);
+		            }
+		            return a;
+		        }
+		        return new classs(a);
+		    }
+		    return a;
+		}
+	}
 	export class View {
 	    id: string;
 	    label: string;

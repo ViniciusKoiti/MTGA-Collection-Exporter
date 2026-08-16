@@ -3,6 +3,7 @@ import { Views } from '../wailsjs/go/main/App';
 import { renderState, type ViewState } from './state';
 import { renderFirstRun } from './firstrun';
 import { renderHome } from './home';
+import { renderCollection } from './collection';
 
 type View = { id: string; label: string };
 
@@ -56,6 +57,8 @@ function render(views: View[], active: string): void {
     void renderFirstRun(body);
   } else if (active === 'home') {
     void renderHome(body);
+  } else if (active === 'collection') {
+    renderCollection(body);
   }
   app.querySelectorAll<HTMLButtonElement>('button[data-view]').forEach((button) => {
     button.addEventListener('click', () => {
