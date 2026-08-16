@@ -21,8 +21,14 @@ import (
 	"github.com/ViniciusKoiti/MTGA-Collection-Exporter/central/internal/postgres"
 )
 
-// startStack boots container, schema, pool and the real routers.
+// startStack boots the Stage 1 stack with its 8-connection budget.
 func startStack(t *testing.T) (string, *pgxpool.Pool) {
+	return startStackWith(t, 8)
+}
+
+// startStackWith boots container, schema, a pool with the given
+// connection budget, and the real routers.
+func startStackWith(t *testing.T, maxConns int) (string, *pgxpool.Pool) {
 	t.Helper()
 	ctx := context.Background()
 	container, err := pgcontainer.Run(ctx, "postgres:16-alpine",
@@ -47,7 +53,7 @@ func startStack(t *testing.T) (string, *pgxpool.Pool) {
 		t.Fatalf("migrate: %v", err)
 	}
 	pool, err := postgres.NewPool(ctx, postgres.PoolConfig{DSN: dsn,
-		MaxConns: 8, AcquireTimeout: 5 * time.Second,
+		MaxConns: maxConns, AcquireTimeout: 5 * time.Second,
 		QueryTimeout: 30 * time.Second})
 	if err != nil {
 		t.Fatalf("pool: %v", err)
