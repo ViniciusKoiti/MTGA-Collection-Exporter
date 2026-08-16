@@ -70,5 +70,5 @@
 - [ ] 8.3 Run 24-hour soak and PostgreSQL, network, object-store, provider, signing, and shutdown fault scenarios with bounded resource growth.
 - [ ] 8.4 Run CodeQL, dependency, secret, container, migration, API abuse, SSRF, injection, authorization, and production-MCP absence checks.
 - [ ] 8.5 Deploy isolated development and staging environments, verify production identity denial from development MCP and harness, and store evidence.
-- [ ] 8.6 Map every specification scenario to automation or an operations drill and validate this OpenSpec in strict mode.
+- [x] 8.6 Map every specification scenario to automation or an operations drill and validate this OpenSpec in strict mode. (central/docs/scenario-map.md; strict validation passes; 3 environment-bound opens named inline)
 - [ ] 8.7 Enable catalog publication first, then telemetry enrollment separately, with feature flags and independent rollback.
