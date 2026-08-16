@@ -2,13 +2,14 @@ import './style.css';
 import { Views } from '../wailsjs/go/main/App';
 import { renderState, type ViewState } from './state';
 import { renderFirstRun } from './firstrun';
+import { renderHome } from './home';
 
 type View = { id: string; label: string };
 
 // Every view starts empty; real states flow from the application
 // services as their tasks land (4.3/4.4/5.x).
 const initialStates: Record<string, ViewState> = {
-  home: { status: 'empty' },
+  home: { status: 'success' }, // Home renders its own state banner
   collection: { status: 'empty' },
   decks: { status: 'empty' },
   assistant: { status: 'empty' },
@@ -50,8 +51,11 @@ function render(views: View[], active: string): void {
     renderState(initialStates[active] ?? { status: 'empty' }) +
     `<p class="placeholder">${placeholders[active] ?? ''}</p>` +
     `<div id="view-body"></div></main>`;
+  const body = app.querySelector<HTMLDivElement>('#view-body')!;
   if (active === 'settings') {
-    void renderFirstRun(app.querySelector<HTMLDivElement>('#view-body')!);
+    void renderFirstRun(body);
+  } else if (active === 'home') {
+    void renderHome(body);
   }
   app.querySelectorAll<HTMLButtonElement>('button[data-view]').forEach((button) => {
     button.addEventListener('click', () => {

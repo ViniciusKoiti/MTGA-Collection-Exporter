@@ -6,6 +6,10 @@ export function FirstRun(arg1, arg2) {
   return window['go']['main']['App']['FirstRun'](arg1, arg2);
 }
 
+export function Home() {
+  return window['go']['main']['App']['Home']();
+}
+
 export function Views() {
   return window['go']['main']['App']['Views']();
 }
