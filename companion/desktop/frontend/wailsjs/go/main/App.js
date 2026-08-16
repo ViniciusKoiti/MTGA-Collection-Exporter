@@ -30,6 +30,10 @@ export function SaveDeckRevision(arg1, arg2) {
   return window['go']['main']['App']['SaveDeckRevision'](arg1, arg2);
 }
 
+export function SuggestSubstitutions(arg1, arg2) {
+  return window['go']['main']['App']['SuggestSubstitutions'](arg1, arg2);
+}
+
 export function Views() {
   return window['go']['main']['App']['Views']();
 }

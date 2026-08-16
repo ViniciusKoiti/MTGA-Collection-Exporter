@@ -20,4 +20,6 @@ export function Home():Promise<homesvc.Model>;
 
 export function SaveDeckRevision(arg1:string,arg2:string):Promise<viewstate.State>;
 
+export function SuggestSubstitutions(arg1:string,arg2:string):Promise<main.SubstitutionReport>;
+
 export function Views():Promise<Array<main.View>>;

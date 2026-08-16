@@ -6,6 +6,19 @@ import (
 	"time"
 )
 
+// OpenCachedOnly serves whatever cache exists WITHOUT touching the
+// network: the deck workspace uses it so a click can never trigger a
+// bulk download. Freshness is unknown without a refresh, so the
+// catalog is flagged Stale; no cache at all is an error.
+func OpenCachedOnly(dir string) (*Catalog, error) {
+	catalog, err := loadCache(dir)
+	if err != nil {
+		return nil, err
+	}
+	catalog.Stale = true
+	return catalog, nil
+}
+
 // Open is the composition entry point: refresh the cache when it is
 // missing or older than maxAge, and fall back to the last good cache —
 // flagged Stale — when the network is unavailable. No cache and no

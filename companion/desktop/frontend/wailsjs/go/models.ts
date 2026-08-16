@@ -192,6 +192,22 @@ export namespace decks {
 	        this.Version = source["Version"];
 	    }
 	}
+	export class SubstitutionCandidate {
+	    Name: string;
+	    Score: number;
+	    Evidence: string[];
+	
+	    static createFrom(source: any = {}) {
+	        return new SubstitutionCandidate(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.Name = source["Name"];
+	        this.Score = source["Score"];
+	        this.Evidence = source["Evidence"];
+	    }
+	}
 	export class Veredicto {
 	    Ruleset: RulesetID;
 	    Problemas: Problema[];
@@ -411,6 +427,70 @@ export namespace main {
 	        this.saved_at = source["saved_at"];
 	        this.ruleset = source["ruleset"];
 	    }
+	}
+	export class Substitution {
+	    missing: string;
+	    candidates: decks.SubstitutionCandidate[];
+	
+	    static createFrom(source: any = {}) {
+	        return new Substitution(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.missing = source["missing"];
+	        this.candidates = this.convertValues(source["candidates"], decks.SubstitutionCandidate);
+	    }
+	
+		convertValues(a: any, classs: any, asMap: boolean = false): any {
+		    if (!a) {
+		        return a;
+		    }
+		    if (a.slice && a.map) {
+		        return (a as any[]).map(elem => this.convertValues(elem, classs));
+		    } else if ("object" === typeof a) {
+		        if (asMap) {
+		            for (const key of Object.keys(a)) {
+		                a[key] = new classs(a[key]);
+		            }
+		            return a;
+		        }
+		        return new classs(a);
+		    }
+		    return a;
+		}
+	}
+	export class SubstitutionReport {
+	    substitutions: Substitution[];
+	    state: viewstate.State;
+	
+	    static createFrom(source: any = {}) {
+	        return new SubstitutionReport(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.substitutions = this.convertValues(source["substitutions"], Substitution);
+	        this.state = this.convertValues(source["state"], viewstate.State);
+	    }
+	
+		convertValues(a: any, classs: any, asMap: boolean = false): any {
+		    if (!a) {
+		        return a;
+		    }
+		    if (a.slice && a.map) {
+		        return (a as any[]).map(elem => this.convertValues(elem, classs));
+		    } else if ("object" === typeof a) {
+		        if (asMap) {
+		            for (const key of Object.keys(a)) {
+		                a[key] = new classs(a[key]);
+		            }
+		            return a;
+		        }
+		        return new classs(a);
+		    }
+		    return a;
+		}
 	}
 	export class View {
 	    id: string;

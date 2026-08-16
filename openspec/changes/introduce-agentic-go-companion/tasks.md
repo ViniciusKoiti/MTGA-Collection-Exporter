@@ -43,7 +43,7 @@
 - [x] 5.3 Implement a versioned Standard ruleset first, including deck size, copy limits, sideboard constraints, card legality, and stale-catalog reporting.
 - [x] 5.4 Implement deterministic owned-card substitution candidates with documented color, mana, type, format, and ranking evidence.
 - [x] 5.5 Implement local saved-deck revisions linked to the collection snapshot and ruleset version used for validation.
-- [ ] 5.6 Implement the Decks workspace with structured editing, ownership and legality results, substitutions, revision history, and Arena export preview. (Workspace live: Arena-text editing with parse round-trip preview, legality verdict honestly flagging the absent catalog, ownership vs the latest snapshot, and session revision history over decksvc. OPEN for substitutions — SubstitutionCandidates exists and is proven, but wiring it needs card color/type profiles from the meta catalog.)
+- [x] 5.6 Implement the Decks workspace with structured editing, ownership and legality results, substitutions, revision history, and Arena export preview. (Substitutions wired last: ranked owned replacements per missing card via the cached Scryfall profiles — cache-only so a click never starts a bulk download, missing cache degrading to a partial state with the stable catalog_unavailable code, profileless cards never inventing suggestions.)
 - [x] 5.7 Implement direct user copy/export commands and approval-token execution for assistant-requested copy/export operations.
 
 ## 6. Agent Tools And Legacy Compatibility
