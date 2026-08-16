@@ -26,6 +26,11 @@ func TestPackagingManifestsExcludeTheDevMCP(t *testing.T) {
 			if err != nil || info.IsDir() {
 				continue
 			}
+			// The release INSPECTOR must name the things it forbids;
+			// mentioning dev-mcp there is the gate working, not a leak.
+			if strings.HasSuffix(path, "inspect_release.ps1") {
+				continue
+			}
 			raw, err := os.ReadFile(path)
 			if err != nil {
 				t.Fatalf("read %s: %v", path, err)

@@ -73,6 +73,6 @@
 - [x] 8.3 Run SQLite and PostgreSQL integration suites with isolated databases and prove production identities are rejected.
 - [ ] 8.4 Run Playwright end-to-end scenarios against Wails progress, approval, cancellation, recovery, and error states.
 - [ ] 8.5 Run local performance, central load, soak, and fault scenarios against the thresholds in `docs/architecture/system-design-tests.md`.
-- [ ] 8.6 Inspect release artifacts to prove the development MCP, test credentials, private fixtures, and development configuration are absent.
+- [x] 8.6 Inspect release artifacts to prove the development MCP, test credentials, private fixtures, and development configuration are absent. (scripts/inspect_release.ps1 gates the packaging workflow between build and upload; proven locally against clean and contaminated zips — the CI proof lands on the next v* tag or workflow_dispatch.)
 - [x] 8.7 Map every specification scenario to an automated test or a documented Windows-only manual verification. (companion/docs/scenario-map.md; 2 honest partials noted inline)
 - [ ] 8.8 Validate the OpenSpec change in strict mode and store CI evidence for all release gates.
