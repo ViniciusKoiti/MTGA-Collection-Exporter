@@ -17,9 +17,11 @@ type DiffResult = {
 
 const controlsHTML =
   `<div class="controls">` +
-  `<input id="col-text" type="search" placeholder="Search name or raw text"/>` +
-  `<input id="col-set" type="text" placeholder="Set" size="5"/>` +
-  `<select id="col-sort"><option value="name">Name</option>` +
+  `<input id="col-text" type="search" aria-label="Search by name or raw text"` +
+  ` placeholder="Search name or raw text"/>` +
+  `<input id="col-set" type="text" aria-label="Filter by set"` +
+  ` placeholder="Set" size="5"/>` +
+  `<select id="col-sort" aria-label="Sort by"><option value="name">Name</option>` +
   `<option value="set">Set</option><option value="quantity">Quantity</option></select>` +
   `<label><input id="col-unresolved" type="checkbox"/> Unresolved only</label>` +
   `<button type="button" id="col-compare">Compare snapshots</button></div>`;

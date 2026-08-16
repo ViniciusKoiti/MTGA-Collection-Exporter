@@ -34,7 +34,7 @@ nav button {
   border-radius: 8px;
   background: transparent;
   color: var(--muted);
-  font-size: 15px;
+  font-size: 0.9375rem;
   cursor: pointer;
 }
 
@@ -72,13 +72,13 @@ main { flex: 1; padding: 32px 40px; }
 
 .state-code {
   font-family: ui-monospace, monospace;
-  font-size: 12px;
+  font-size: 0.75rem;
   background: rgba(255, 255, 255, 0.08);
   padding: 2px 6px;
   border-radius: 4px;
 }
 
-.state-detail { font-size: 13px; }
+.state-detail { font-size: 0.8125rem; }
 
 .cards {
   display: grid;
@@ -96,8 +96,8 @@ main { flex: 1; padding: 32px 40px; }
   background: var(--panel);
 }
 
-.card-label { font-size: 12px; color: var(--muted); text-transform: uppercase; }
-.card-value { font-size: 18px; }
+.card-label { font-size: 0.75rem; color: var(--muted); text-transform: uppercase; }
+.card-value { font-size: 1.125rem; }
 
 .actions button {
   padding: 8px 14px;
@@ -105,7 +105,7 @@ main { flex: 1; padding: 32px 40px; }
   border-radius: 8px;
   background: var(--accent);
   color: #101318;
-  font-size: 14px;
+  font-size: 0.875rem;
   cursor: pointer;
 }
 
@@ -128,7 +128,7 @@ main { flex: 1; padding: 32px 40px; }
   border-radius: 8px;
   background: var(--panel);
   color: var(--text);
-  font-size: 14px;
+  font-size: 0.875rem;
 }
 
 .controls :focus-visible {
@@ -142,13 +142,13 @@ th, td {
   text-align: left;
   padding: 8px 10px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-  font-size: 14px;
+  font-size: 0.875rem;
 }
 
-th { color: var(--muted); font-size: 12px; text-transform: uppercase; }
+th { color: var(--muted); font-size: 0.75rem; text-transform: uppercase; }
 
-td.detail { color: var(--muted); font-size: 12px; }
+td.detail { color: var(--muted); font-size: 0.75rem; }
 
-main h1 { margin: 0 0 12px; font-size: 24px; }
+main h1 { margin: 0 0 12px; font-size: 1.5rem; }
 
 .placeholder { color: var(--muted); max-width: 60ch; }

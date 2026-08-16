@@ -65,6 +65,23 @@ function render(views: View[], active: string): void {
       location.hash = button.dataset.view!;
     });
   });
+  // Keyboard navigation (task 4.6): arrows move through the nav,
+  // Home/End jump, Enter/Space activate (native button behavior).
+  const navElement = app.querySelector<HTMLElement>('nav')!;
+  navElement.addEventListener('keydown', (event) => {
+    const buttons = Array.from(
+      navElement.querySelectorAll<HTMLButtonElement>('button[data-view]'));
+    const index = buttons.indexOf(document.activeElement as HTMLButtonElement);
+    if (index < 0) return;
+    const move = (to: number): void => {
+      event.preventDefault();
+      buttons[(to + buttons.length) % buttons.length].focus();
+    };
+    if (event.key === 'ArrowDown' || event.key === 'ArrowRight') move(index + 1);
+    else if (event.key === 'ArrowUp' || event.key === 'ArrowLeft') move(index - 1);
+    else if (event.key === 'Home') move(0);
+    else if (event.key === 'End') move(buttons.length - 1);
+  });
 }
 
 async function start(): Promise<void> {
