@@ -14,6 +14,10 @@ export function CompareSnapshots() {
   return window['go']['main']['App']['CompareSnapshots']();
 }
 
+export function DecideExport(arg1, arg2, arg3) {
+  return window['go']['main']['App']['DecideExport'](arg1, arg2, arg3);
+}
+
 export function DeckHistory(arg1) {
   return window['go']['main']['App']['DeckHistory'](arg1);
 }
@@ -36,6 +40,10 @@ export function ImportCollectionFrom(arg1) {
 
 export function SaveDeckRevision(arg1, arg2) {
   return window['go']['main']['App']['SaveDeckRevision'](arg1, arg2);
+}
+
+export function StartApprovedExport(arg1) {
+  return window['go']['main']['App']['StartApprovedExport'](arg1);
 }
 
 export function SuggestSubstitutions(arg1, arg2) {

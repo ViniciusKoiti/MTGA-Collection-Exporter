@@ -1,8 +1,45 @@
 // Collection view (task 4.4): search, sorting, compound filters,
 // per-card details, unresolved records and snapshot comparison — the
 // engine lives in Go (collectionsvc), this module renders it.
-import { Collection, CompareSnapshots } from '../wailsjs/go/main/App';
+import { Collection, CompareSnapshots, StartApprovedExport, DecideExport }
+  from '../wailsjs/go/main/App';
 import { renderState, type ViewState } from './state';
+
+type ExportPreview = {
+  run_id: string; target: string; hash: string; bytes: number;
+  decision_key: string; state: ViewState;
+};
+
+// Approval-gated export (harness 8.4): the run pauses on the exact
+// payload preview; nothing is written without an explicit decision.
+async function approvedExport(container: HTMLElement): Promise<void> {
+  const target = container.querySelector<HTMLDivElement>('#col-results')!;
+  const preview = (await StartApprovedExport('json')) as unknown as ExportPreview;
+  if (preview.state.status !== 'stale') {
+    target.innerHTML = renderState(preview.state);
+    return;
+  }
+  target.innerHTML =
+    renderState(preview.state) +
+    `<div class="state state-partial" data-export-preview>` +
+    `<strong>Approve this export?</strong>` +
+    `<span class="state-detail">${preview.target} · ${preview.bytes} bytes · ` +
+    `hash <code class="state-code">${preview.hash.slice(0, 12)}…</code></span>` +
+    `<button type="button" id="export-approve">Approve</button>` +
+    `<button type="button" id="export-deny">Deny</button></div>`;
+  const decide = async (grant: boolean): Promise<void> => {
+    const outcome = (await DecideExport(preview.run_id, preview.decision_key, grant)) as
+      unknown as { written?: string; state: ViewState };
+    target.innerHTML = renderState(outcome.state) +
+      (outcome.written
+        ? `<p data-export-done>Exported to ${outcome.written}</p>`
+        : '');
+  };
+  container.querySelector('#export-approve')!
+    .addEventListener('click', () => { void decide(true); });
+  container.querySelector('#export-deny')!
+    .addEventListener('click', () => { void decide(false); });
+}
 
 type Row = {
   printing: string; name: string; set: string; quantity: number;
@@ -24,7 +61,8 @@ const controlsHTML =
   `<select id="col-sort" aria-label="Sort by"><option value="name">Name</option>` +
   `<option value="set">Set</option><option value="quantity">Quantity</option></select>` +
   `<label><input id="col-unresolved" type="checkbox"/> Unresolved only</label>` +
-  `<button type="button" id="col-compare">Compare snapshots</button></div>`;
+  `<button type="button" id="col-compare">Compare snapshots</button>` +
+  `<button type="button" id="col-export">Export (approved)</button></div>`;
 
 function rowHTML(row: Row): string {
   const badge = row.unresolved ? ' <span class="state-code">unresolved</span>' : '';
@@ -85,6 +123,9 @@ export function renderCollection(container: HTMLElement): void {
   container.querySelector('#col-unresolved')!.addEventListener('change', rerun);
   container.querySelector('#col-compare')!.addEventListener('click', () => {
     void compare(container);
+  });
+  container.querySelector('#col-export')!.addEventListener('click', () => {
+    void approvedExport(container);
   });
   rerun();
 }

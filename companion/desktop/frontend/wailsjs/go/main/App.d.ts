@@ -12,6 +12,8 @@ export function Collection(arg1:collectionsvc.Query):Promise<main.CollectionPage
 
 export function CompareSnapshots():Promise<main.CollectionDiff>;
 
+export function DecideExport(arg1:string,arg2:string,arg3:boolean):Promise<main.ExportOutcome>;
+
 export function DeckHistory(arg1:string):Promise<Array<main.DeckRevision>>;
 
 export function FirstRun(arg1:boolean,arg2:boolean):Promise<setup.Result>;
@@ -23,6 +25,8 @@ export function ImportCollection():Promise<main.ImportResult>;
 export function ImportCollectionFrom(arg1:string):Promise<main.ImportResult>;
 
 export function SaveDeckRevision(arg1:string,arg2:string):Promise<viewstate.State>;
+
+export function StartApprovedExport(arg1:string):Promise<main.ExportPreview>;
 
 export function SuggestSubstitutions(arg1:string,arg2:string):Promise<main.SubstitutionReport>;
 

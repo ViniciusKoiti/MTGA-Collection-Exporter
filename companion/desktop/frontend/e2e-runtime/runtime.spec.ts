@@ -52,3 +52,26 @@ test('unresolved records stay inspectable in the collection', async ({ page }) =
   await page.getByLabel('Search by name or raw text').fill('zzz-no-such-card');
   await expect(page.locator('tbody tr')).toHaveCount(0);
 });
+
+test('a denied export writes nothing (approval + error state)', async ({ page }) => {
+  await page.goto('/#collection');
+  await bindingsReady(page);
+  await page.getByRole('button', { name: 'Export (approved)' }).click();
+  await expect(page.locator('[data-export-preview]')).toBeVisible({ timeout: 15_000 });
+  await page.getByRole('button', { name: 'Deny' }).click();
+  await expect(page.locator('.state-error')).toBeVisible({ timeout: 15_000 });
+  await expect(page.locator('.state-code', { hasText: 'approval_denied' }))
+    .toBeVisible();
+  await expect(page.locator('[data-export-done]')).toHaveCount(0);
+});
+
+test('an approved export pauses on the preview then writes', async ({ page }) => {
+  await page.goto('/#collection');
+  await bindingsReady(page);
+  await page.getByRole('button', { name: 'Export (approved)' }).click();
+  const preview = page.locator('[data-export-preview]');
+  await expect(preview).toBeVisible({ timeout: 15_000 });
+  await expect(preview.getByText('bytes')).toBeVisible();
+  await page.getByRole('button', { name: 'Approve', exact: true }).click();
+  await expect(page.locator('[data-export-done]')).toBeVisible({ timeout: 15_000 });
+});
