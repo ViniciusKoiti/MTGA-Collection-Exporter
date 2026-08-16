@@ -1,7 +1,18 @@
 import './style.css';
 import { Views } from '../wailsjs/go/main/App';
+import { renderState, type ViewState } from './state';
 
 type View = { id: string; label: string };
+
+// Every view starts empty; real states flow from the application
+// services as their tasks land (4.3/4.4/5.x).
+const initialStates: Record<string, ViewState> = {
+  home: { status: 'empty' },
+  collection: { status: 'empty' },
+  decks: { status: 'empty' },
+  assistant: { status: 'empty' },
+  settings: { status: 'empty' },
+};
 
 // fallbackViews mirrors the Go contract for dev outside the runtime;
 // inside Wails the bound Views() is the single source of truth.
@@ -35,6 +46,7 @@ function render(views: View[], active: string): void {
   app.innerHTML =
     `<nav aria-label="Main navigation">${nav}</nav>` +
     `<main><h1>${current?.label ?? ''}</h1>` +
+    renderState(initialStates[active] ?? { status: 'empty' }) +
     `<p class="placeholder">${placeholders[active] ?? ''}</p></main>`;
   app.querySelectorAll<HTMLButtonElement>('button[data-view]').forEach((button) => {
     button.addEventListener('click', () => {

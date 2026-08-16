@@ -32,7 +32,7 @@
 - [ ] 4.2 Implement first-run setup for source detection, Detailed Logs guidance, privacy choices, source verification, and explicit import fallback.
 - [ ] 4.3 Implement Home with MTGA presence, source health, last sync, freshness, snapshot totals, delta, progress, and in-context recovery actions.
 - [ ] 4.4 Implement Collection search, sorting, compact compound filters, details, unresolved records, and snapshot comparison.
-- [ ] 4.5 Implement consistent empty, loading, stale, partial, error, and success states using stable application error codes.
+- [x] 4.5 Implement consistent empty, loading, stale, partial, error, and success states using stable application error codes.
 - [ ] 4.6 Add keyboard navigation, visible focus, text status labels, scalable layout checks, and automated accessibility assertions for primary flows.
 - [ ] 4.7 Add component and end-to-end tests for setup, successful import, stale collection, failed sync recovery, and unresolved-card inspection.
 
