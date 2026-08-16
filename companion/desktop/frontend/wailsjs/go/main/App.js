@@ -26,6 +26,10 @@ export function Home() {
   return window['go']['main']['App']['Home']();
 }
 
+export function ImportCollection() {
+  return window['go']['main']['App']['ImportCollection']();
+}
+
 export function SaveDeckRevision(arg1, arg2) {
   return window['go']['main']['App']['SaveDeckRevision'](arg1, arg2);
 }

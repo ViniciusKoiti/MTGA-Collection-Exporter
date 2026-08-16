@@ -33,7 +33,7 @@
 - [x] 4.3 Implement `approved-export` with immutable preview, expiring approval, idempotent write, and completion evidence.
 - [x] 4.4 Implement `telemetry-flush` with consent check, minimization, batching, retry, acknowledgement, and local-only fallback.
 - [x] 4.5 Implement `development-scenario` to arrange fixtures, run one target graph, assert evidence, and produce a report.
-- [ ] 4.6 Route Wails commands and background jobs through the activity registry and publish typed progress events.
+- [x] 4.6 Route Wails commands and background jobs through the activity registry and publish typed progress events.
 - [x] 4.7 Add golden graph tests for success, validation failure, retry, approval, cancellation, offline mode, and stale catalog paths.
 
 ## 5. Programmatic Development Harness

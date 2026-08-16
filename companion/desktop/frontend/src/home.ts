@@ -1,8 +1,33 @@
 // Home view (task 4.3): renders the model composed by Go
 // (application/homesvc) — presence, source health, last sync,
 // totals, delta and the in-context recovery actions.
-import { Home } from '../wailsjs/go/main/App';
+import { Home, ImportCollection } from '../wailsjs/go/main/App';
+import { EventsOn } from '../wailsjs/runtime/runtime';
 import { renderState, type ViewState } from './state';
+
+type ActivityEvent = {
+  run: string; graph: string; step: number; outcome: string; at: string;
+};
+
+// Typed activity progress (harness task 4.6): every workflow event
+// the engine publishes lands on this bus and renders live.
+let progressBound = false;
+
+function bindProgress(container: HTMLElement): void {
+  if (progressBound) return;
+  try {
+    EventsOn('activity:event', (event: ActivityEvent) => {
+      const line = container.querySelector<HTMLDivElement>('#activity-progress');
+      if (line) {
+        line.textContent =
+          `${event.at} · ${event.graph} step ${event.step} ${event.outcome}`;
+      }
+    });
+    progressBound = true;
+  } catch {
+    // Outside the desktop runtime there is no event bus to bind.
+  }
+}
 
 type HomeModel = {
   mtga_running: boolean;
@@ -48,12 +73,17 @@ export async function renderHome(container: HTMLElement): Promise<void> {
     card('Cards', String(model.totals)) +
     card('Delta', delta) +
     `</div>` +
-    (actions ? `<div class="actions">${actions}</div>` : '');
+    (actions ? `<div class="actions">${actions}</div>` : '') +
+    `<div id="activity-progress" class="placeholder" role="status"></div>`;
+  bindProgress(container);
   container.querySelectorAll<HTMLButtonElement>('button[data-action]')
     .forEach((button) => {
       button.addEventListener('click', () => {
         if (button.dataset.action === 'import_collection') {
-          location.hash = 'settings';
+          void (async () => {
+            await ImportCollection(); // graph runs via the activity registry
+            await renderHome(container);
+          })();
           return;
         }
         void renderHome(container); // resync / retry re-compose
