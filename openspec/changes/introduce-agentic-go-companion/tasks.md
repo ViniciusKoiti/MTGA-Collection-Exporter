@@ -34,7 +34,7 @@
 - [x] 4.4 Implement Collection search, sorting, compact compound filters, details, unresolved records, and snapshot comparison.
 - [x] 4.5 Implement consistent empty, loading, stale, partial, error, and success states using stable application error codes.
 - [x] 4.6 Add keyboard navigation, visible focus, text status labels, scalable layout checks, and automated accessibility assertions for primary flows.
-- [ ] 4.7 Add component and end-to-end tests for setup, successful import, stale collection, failed sync recovery, and unresolved-card inspection.
+- [ ] 4.7 Add component and end-to-end tests for setup, successful import, stale collection, failed sync recovery, and unresolved-card inspection. (Component half done and CI-enforced: vitest+jsdom suite covers all five named flows against the real renderers with mocked bindings, wired as a frontend job in go-modules. OPEN for the end-to-end half, which needs Playwright browsers plus a driven Wails dev server.)
 
 ## 5. Deck Workspace
 
