@@ -6,7 +6,6 @@ import (
 	"sync"
 	"time"
 
-	"github.com/ViniciusKoiti/MTGA-Collection-Exporter/companion/internal/adapters/inmem"
 	"github.com/ViniciusKoiti/MTGA-Collection-Exporter/companion/internal/application/apperr"
 	"github.com/ViniciusKoiti/MTGA-Collection-Exporter/companion/internal/application/decksvc"
 	"github.com/ViniciusKoiti/MTGA-Collection-Exporter/companion/internal/application/viewstate"
@@ -22,9 +21,9 @@ var (
 	deckSvc  *decksvc.Service
 )
 
-// deckService wires revisions over the local snapshot store; the
-// revision store itself is in-memory for now (session history) — the
-// durable adapter is a follow-up, the port already exists.
+// deckService wires revisions over the SAME local store as the
+// snapshots: both live in companion.db, so revision history is
+// durable across restarts.
 func deckService() (*decksvc.Service, error) {
 	var err error
 	deckOnce.Do(func() {
@@ -33,7 +32,7 @@ func deckService() (*decksvc.Service, error) {
 			err = openErr
 			return
 		}
-		deckSvc = decksvc.New(snapshots, inmem.NewDeckStore(), systemClock{})
+		deckSvc = decksvc.New(snapshots, store.Decks(), systemClock{})
 	})
 	if deckSvc == nil && err == nil {
 		err = storeErr
