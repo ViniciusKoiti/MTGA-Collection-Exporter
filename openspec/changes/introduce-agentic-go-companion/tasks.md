@@ -29,7 +29,7 @@
 ## 4. Desktop Companion Flow
 
 - [x] 4.1 Scaffold the stable Wails TypeScript desktop shell with Home, Collection, Decks, Assistant, and Settings navigation.
-- [ ] 4.2 Implement first-run setup for source detection, Detailed Logs guidance, privacy choices, source verification, and explicit import fallback.
+- [x] 4.2 Implement first-run setup for source detection, Detailed Logs guidance, privacy choices, source verification, and explicit import fallback.
 - [ ] 4.3 Implement Home with MTGA presence, source health, last sync, freshness, snapshot totals, delta, progress, and in-context recovery actions.
 - [ ] 4.4 Implement Collection search, sorting, compact compound filters, details, unresolved records, and snapshot comparison.
 - [x] 4.5 Implement consistent empty, loading, stale, partial, error, and success states using stable application error codes.

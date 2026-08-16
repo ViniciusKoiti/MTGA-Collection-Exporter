@@ -1,6 +1,7 @@
 import './style.css';
 import { Views } from '../wailsjs/go/main/App';
 import { renderState, type ViewState } from './state';
+import { renderFirstRun } from './firstrun';
 
 type View = { id: string; label: string };
 
@@ -47,7 +48,11 @@ function render(views: View[], active: string): void {
     `<nav aria-label="Main navigation">${nav}</nav>` +
     `<main><h1>${current?.label ?? ''}</h1>` +
     renderState(initialStates[active] ?? { status: 'empty' }) +
-    `<p class="placeholder">${placeholders[active] ?? ''}</p></main>`;
+    `<p class="placeholder">${placeholders[active] ?? ''}</p>` +
+    `<div id="view-body"></div></main>`;
+  if (active === 'settings') {
+    void renderFirstRun(app.querySelector<HTMLDivElement>('#view-body')!);
+  }
   app.querySelectorAll<HTMLButtonElement>('button[data-view]').forEach((button) => {
     button.addEventListener('click', () => {
       location.hash = button.dataset.view!;
