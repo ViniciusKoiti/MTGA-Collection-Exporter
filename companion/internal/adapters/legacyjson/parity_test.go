@@ -27,13 +27,11 @@ func (fixedClock) Now() time.Time { return time.Unix(1_700_000_000, 0).UTC() }
 // carry the exact Python quantity under the exact raw identity.
 type noCatalog struct{}
 
-func (noCatalog) ResolvePorArena(context.Context, collection.ArenaID) (
-	collection.CardIdentity, bool, error) {
+func (noCatalog) ResolvePorArena(context.Context, collection.ArenaID) (collection.CardIdentity, bool, error) {
 	return collection.CardIdentity{}, false, nil
 }
 
-func (noCatalog) ResolvePorNome(context.Context, string) (
-	collection.CardIdentity, bool, error) {
+func (noCatalog) ResolvePorNome(context.Context, string) (collection.CardIdentity, bool, error) {
 	return collection.CardIdentity{}, false, nil
 }
 
