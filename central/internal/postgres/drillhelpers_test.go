@@ -53,11 +53,17 @@ func drillContainer(t *testing.T) (*pgcontainer.PostgresContainer, string) {
 	return container, dsn
 }
 
-// dumpDatabase takes the backup with pg_dump inside the container.
+// dumpDatabase takes a data-only backup with pg_dump inside the
+// container. Data-only is deliberate and mirrors the documented
+// restore ordering (docs/data-inventory.md): the schema always comes
+// from the migrator, never from a dump, and jobs/outbox are never
+// restored — replaying stale jobs is a duplicate-effect risk.
 func dumpDatabase(t *testing.T, c *pgcontainer.PostgresContainer) []byte {
 	t.Helper()
 	code, reader, err := c.Exec(context.Background(),
-		[]string{"pg_dump", "-U", "central", "central"}, tcexec.Multiplexed())
+		[]string{"pg_dump", "-U", "central", "--data-only",
+			"--exclude-table=schema_migrations", "--exclude-table=jobs",
+			"--exclude-table=outbox", "central"}, tcexec.Multiplexed())
 	if err != nil || code != 0 {
 		t.Fatalf("pg_dump: code %d, %v", code, err)
 	}

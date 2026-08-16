@@ -30,7 +30,7 @@ func encryptRoundTrip(t *testing.T, dump []byte) []byte {
 		t.Fatalf("nonce: %v", err)
 	}
 	sealed := gcm.Seal(nil, nonce, dump, nil)
-	if bytes.Contains(sealed, []byte("CREATE TABLE")) {
+	if bytes.Contains(sealed, []byte("drill-alive")) {
 		t.Fatal("the sealed backup leaks plaintext")
 	}
 	opened, err := gcm.Open(nil, nonce, sealed, nil)

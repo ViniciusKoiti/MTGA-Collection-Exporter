@@ -42,10 +42,15 @@ func TestEncryptedBackupRestoreDrill(t *testing.T) {
 	backup := encryptRoundTrip(t, dumpDatabase(t, source))
 
 	target, targetDSN := drillContainer(t)
-	restoreDatabase(t, target, backup)
-	// The migrator must accept the restored schema as its own.
+	// Documented restore ordering: the migrator builds schema and
+	// roles first; the backup only ever replays data.
 	if err := RunMigrator(ctx, targetDSN); err != nil {
-		t.Fatalf("restored schema must satisfy the migrator: %v", err)
+		t.Fatalf("target migrate: %v", err)
+	}
+	restoreDatabase(t, target, backup)
+	// The migrator must still accept the restored database as its own.
+	if err := RunMigrator(ctx, targetDSN); err != nil {
+		t.Fatalf("restored database must satisfy the migrator: %v", err)
 	}
 	targetPool := poolFor(t, targetDSN)
 	// A remnant from an older backup resurrects purged data...
