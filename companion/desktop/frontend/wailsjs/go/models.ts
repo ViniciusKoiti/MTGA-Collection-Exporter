@@ -103,6 +103,134 @@ export namespace collectionsvc {
 
 }
 
+export namespace decks {
+	
+	export class OwnershipLine {
+	    Name: string;
+	    Required: number;
+	    Owned: number;
+	    Missing: number;
+	    WildcardRelevant: number;
+	
+	    static createFrom(source: any = {}) {
+	        return new OwnershipLine(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.Name = source["Name"];
+	        this.Required = source["Required"];
+	        this.Owned = source["Owned"];
+	        this.Missing = source["Missing"];
+	        this.WildcardRelevant = source["WildcardRelevant"];
+	    }
+	}
+	export class Ownership {
+	    Snapshot: string;
+	    Lines: OwnershipLine[];
+	    TotalMissing: number;
+	    Complete: boolean;
+	
+	    static createFrom(source: any = {}) {
+	        return new Ownership(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.Snapshot = source["Snapshot"];
+	        this.Lines = this.convertValues(source["Lines"], OwnershipLine);
+	        this.TotalMissing = source["TotalMissing"];
+	        this.Complete = source["Complete"];
+	    }
+	
+		convertValues(a: any, classs: any, asMap: boolean = false): any {
+		    if (!a) {
+		        return a;
+		    }
+		    if (a.slice && a.map) {
+		        return (a as any[]).map(elem => this.convertValues(elem, classs));
+		    } else if ("object" === typeof a) {
+		        if (asMap) {
+		            for (const key of Object.keys(a)) {
+		                a[key] = new classs(a[key]);
+		            }
+		            return a;
+		        }
+		        return new classs(a);
+		    }
+		    return a;
+		}
+	}
+	
+	export class Problema {
+	    Code: string;
+	    Carta: string;
+	    Detail: string;
+	
+	    static createFrom(source: any = {}) {
+	        return new Problema(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.Code = source["Code"];
+	        this.Carta = source["Carta"];
+	        this.Detail = source["Detail"];
+	    }
+	}
+	export class RulesetID {
+	    Format: string;
+	    Version: number;
+	
+	    static createFrom(source: any = {}) {
+	        return new RulesetID(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.Format = source["Format"];
+	        this.Version = source["Version"];
+	    }
+	}
+	export class Veredicto {
+	    Ruleset: RulesetID;
+	    Problemas: Problema[];
+	    CatalogoStale: boolean;
+	    Legal: boolean;
+	
+	    static createFrom(source: any = {}) {
+	        return new Veredicto(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.Ruleset = this.convertValues(source["Ruleset"], RulesetID);
+	        this.Problemas = this.convertValues(source["Problemas"], Problema);
+	        this.CatalogoStale = source["CatalogoStale"];
+	        this.Legal = source["Legal"];
+	    }
+	
+		convertValues(a: any, classs: any, asMap: boolean = false): any {
+		    if (!a) {
+		        return a;
+		    }
+		    if (a.slice && a.map) {
+		        return (a as any[]).map(elem => this.convertValues(elem, classs));
+		    } else if ("object" === typeof a) {
+		        if (asMap) {
+		            for (const key of Object.keys(a)) {
+		                a[key] = new classs(a[key]);
+		            }
+		            return a;
+		        }
+		        return new classs(a);
+		    }
+		    return a;
+		}
+	}
+
+}
+
 export namespace homesvc {
 	
 	export class Action {
@@ -231,6 +359,58 @@ export namespace main {
 		    }
 		    return a;
 		}
+	}
+	export class DeckAnalysis {
+	    preview: string;
+	    verdict: decks.Veredicto;
+	    ownership: decks.Ownership;
+	    state: viewstate.State;
+	
+	    static createFrom(source: any = {}) {
+	        return new DeckAnalysis(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.preview = source["preview"];
+	        this.verdict = this.convertValues(source["verdict"], decks.Veredicto);
+	        this.ownership = this.convertValues(source["ownership"], decks.Ownership);
+	        this.state = this.convertValues(source["state"], viewstate.State);
+	    }
+	
+		convertValues(a: any, classs: any, asMap: boolean = false): any {
+		    if (!a) {
+		        return a;
+		    }
+		    if (a.slice && a.map) {
+		        return (a as any[]).map(elem => this.convertValues(elem, classs));
+		    } else if ("object" === typeof a) {
+		        if (asMap) {
+		            for (const key of Object.keys(a)) {
+		                a[key] = new classs(a[key]);
+		            }
+		            return a;
+		        }
+		        return new classs(a);
+		    }
+		    return a;
+		}
+	}
+	export class DeckRevision {
+	    id: string;
+	    saved_at: string;
+	    ruleset: string;
+	
+	    static createFrom(source: any = {}) {
+	        return new DeckRevision(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.id = source["id"];
+	        this.saved_at = source["saved_at"];
+	        this.ruleset = source["ruleset"];
+	    }
 	}
 	export class View {
 	    id: string;

@@ -4,6 +4,7 @@ import { renderState, type ViewState } from './state';
 import { renderFirstRun } from './firstrun';
 import { renderHome } from './home';
 import { renderCollection } from './collection';
+import { renderDecks } from './decks';
 
 type View = { id: string; label: string };
 
@@ -59,6 +60,8 @@ function render(views: View[], active: string): void {
     void renderHome(body);
   } else if (active === 'collection') {
     renderCollection(body);
+  } else if (active === 'decks') {
+    renderDecks(body);
   }
   app.querySelectorAll<HTMLButtonElement>('button[data-view]').forEach((button) => {
     button.addEventListener('click', () => {
