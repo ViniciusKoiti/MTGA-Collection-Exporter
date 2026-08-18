@@ -1,0 +1,17 @@
+{
+  "by_color": {
+    "Colorless": 1,
+    "R": 2
+  },
+  "by_rarity": {
+    "uncommon": 2,
+    "unknown": 1
+  },
+  "top_sets": {
+    "?": 1,
+    "DMU": 1,
+    "M21": 1
+  },
+  "total_copies": 7,
+  "unique_cards": 3
+}

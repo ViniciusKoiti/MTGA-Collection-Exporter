@@ -1,0 +1,10 @@
+bundle|v1|approved-export/v1
+step|01|valida|ok||0ms
+step|02|exporta||approval_pending|0ms
+step|01|exporta|ok||0ms
+run|approved-export/v1|succeeded|done|v5
+event|01|ok||0ms|-
+event|02||step-1|0ms|error_code=approval_pending
+event|00|||0ms|status=waiting_approval
+event|01|ok||0ms|-
+event|00|done||0ms|status=succeeded

@@ -1,0 +1,155 @@
+name: go-modules
+
+on:
+  push:
+    paths:
+      - "central/**"
+      - "companion/**"
+      - ".github/workflows/central-go.yml"
+  pull_request:
+    paths:
+      - "central/**"
+      - "companion/**"
+      - ".github/workflows/central-go.yml"
+
+jobs:
+  quality:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        module: [central, companion]
+    defaults:
+      run:
+        working-directory: ${{ matrix.module }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: ${{ matrix.module }}/go.mod
+          cache: false
+
+      - name: Formatação (gofmt)
+        run: test -z "$(gofmt -l .)"
+
+      - name: Análise estática (go vet)
+        run: go vet ./...
+
+      - name: Análise estática (staticcheck)
+        run: go run honnef.co/go/tools/cmd/staticcheck@latest ./...
+
+      - name: Build
+        run: go build ./...
+
+      - name: Testes com detector de corrida
+        run: go test -race -count=1 ./...
+
+      - name: Vulnerabilidades (govulncheck)
+        run: go run golang.org/x/vuln/cmd/govulncheck@latest ./...
+
+  # CI approximation of OpenSpec introduce-agentic-go-companion task 7.4:
+  # builds the release desktop.exe and runs the same vm_smoke.ps1 used on a
+  # clean VM. Hosted runners are NOT a clean machine (Go and WebView2 are
+  # preinstalled), so the WebView2-absent bootstrap and the clean-machine
+  # evidence still require the real VM run; this job covers packaging
+  # (no dev MCP), first-run startup, database creation and the
+  # no-outbound-network guarantee on every push.
+  desktop-smoke-windows:
+    name: desktop smoke (windows)
+    runs-on: windows-latest
+    defaults:
+      run:
+        shell: pwsh
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: companion/go.mod
+          cache: false
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Install Wails CLI
+        run: go install github.com/wailsapp/wails/v2/cmd/wails@v2.14.0
+
+      - name: Build release desktop binary
+        working-directory: companion/desktop
+        run: wails build -clean
+
+      - name: Assemble smoke kit
+        run: |
+          $kit = Join-Path $env:RUNNER_TEMP 'companion-vm-kit'
+          $evidence = Join-Path $env:RUNNER_TEMP 'smoke-evidence'
+          New-Item -ItemType Directory -Force $kit, $evidence | Out-Null
+          Copy-Item companion\desktop\build\bin\desktop.exe (Join-Path $kit 'desktop.exe')
+          Copy-Item companion\scripts\vm_smoke.ps1 (Join-Path $kit 'vm_smoke.ps1')
+          "KIT=$kit" | Out-File -Append $env:GITHUB_ENV
+          "EVIDENCE=$evidence" | Out-File -Append $env:GITHUB_ENV
+
+      - name: Online smoke leg
+        run: |
+          powershell -ExecutionPolicy Bypass -File (Join-Path $env:KIT 'vm_smoke.ps1')
+          Move-Item (Join-Path $env:KIT 'vm-smoke-result.txt') (Join-Path $env:EVIDENCE 'vm-smoke-online.txt')
+
+      - name: Offline smoke leg (outbound blocked by firewall, fresh data dir)
+        run: |
+          Remove-Item -Recurse -Force (Join-Path $env:APPDATA 'MTGA-Companion') -ErrorAction SilentlyContinue
+          New-NetFirewallRule -DisplayName block-desktop-outbound -Direction Outbound `
+            -Program (Join-Path $env:KIT 'desktop.exe') -Action Block | Out-Null
+          powershell -ExecutionPolicy Bypass -File (Join-Path $env:KIT 'vm_smoke.ps1') -Offline
+          Move-Item (Join-Path $env:KIT 'vm-smoke-result.txt') (Join-Path $env:EVIDENCE 'vm-smoke-offline.txt')
+
+      - name: Assert smoke expectations
+        run: |
+          foreach ($leg in 'online', 'offline') {
+            $report = Get-Content (Join-Path $env:EVIDENCE "vm-smoke-$leg.txt") -Raw
+            Write-Output "--- $leg ---"
+            Write-Output $report
+            foreach ($expected in @(
+                'unexpected kit files: none',
+                'devmcp marker in desktop.exe: False',
+                'process alive after 12s: True',
+                'companion.db created: True',
+                'remote connections: none')) {
+              if (-not $report.Contains($expected)) {
+                throw "[$leg] missing expected line: $expected"
+              }
+            }
+          }
+
+      - name: Upload smoke evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: companion-smoke-windows
+          path: ${{ env.EVIDENCE }}/vm-smoke-*.txt
+          if-no-files-found: error
+
+  frontend:
+    name: frontend (companion desktop)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: companion/desktop/frontend
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Install
+        run: npm ci
+
+      - name: Component tests (vitest, primary flows)
+        run: npm test
+
+      - name: Install Playwright Chromium
+        run: npx playwright install --with-deps chromium
+
+      - name: End-to-end tests (shell navigation and fallbacks)
+        run: npm run e2e

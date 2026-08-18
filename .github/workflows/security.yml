@@ -1,0 +1,72 @@
+# Security gates (OpenSpec add-central-go-platform, task 8.4):
+# CodeQL for Go and Python plus a full-history secret scan. The
+# remaining items of the task already run elsewhere: dependency scan
+# (govulncheck in go-modules), migration preflight suites, API
+# abuse/SSRF/injection/authorization batteries, and production-MCP
+# absence (packaging tripwire + release inspector).
+name: security
+
+on:
+  push:
+    branches: [main, feat/central-go-platform]
+  pull_request:
+  schedule:
+    - cron: "0 6 * * 1"
+
+permissions:
+  contents: read
+  security-events: write
+
+jobs:
+  codeql:
+    name: CodeQL (${{ matrix.language }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - language: go
+            build-mode: manual
+          - language: python
+            build-mode: none
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Go
+        if: matrix.language == 'go'
+        uses: actions/setup-go@v5
+        with:
+          go-version-file: central/go.mod
+          cache: false
+
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v3
+        with:
+          languages: ${{ matrix.language }}
+          build-mode: ${{ matrix.build-mode }}
+
+      - name: Build Go modules
+        if: matrix.language == 'go'
+        run: |
+          cd central && go build ./...
+          cd ../companion && go build ./...
+
+      - name: Analyze
+        uses: github/codeql-action/analyze@v3
+        with:
+          category: "/language:${{ matrix.language }}"
+
+  secrets:
+    name: Secret scan (gitleaks)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout full history
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Scan
+        uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ github.token }}

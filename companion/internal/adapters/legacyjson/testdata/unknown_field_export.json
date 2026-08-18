@@ -1,0 +1,16 @@
+[
+  {
+    "count": 4,
+    "name": "Lightning Strike",
+    "set": "DMU",
+    "collector_number": "137",
+    "rarity": "uncommon",
+    "colors": ["R"],
+    "type_line": "Instant",
+    "mana_cost": "{1}{R}",
+    "cmc": 2.0,
+    "image": "",
+    "grp_id": 82183,
+    "campo_novo_do_futuro": true
+  }
+]

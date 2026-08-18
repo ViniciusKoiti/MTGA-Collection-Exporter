@@ -1,0 +1,68 @@
+@startuml mtga-architecture
+title MTGA Companion - Target System Architecture
+left to right direction
+skinparam componentStyle rectangle
+skinparam shadowing false
+
+actor Player
+
+node "User device - private trust boundary" as Device {
+  component "Wails frontend\nTypeScript" as Frontend
+  component "Local backend\nGo modular monolith" as Local
+  database "SQLite\ncollections, decks, graph runs, outbox" as SQLite
+  file "MTGA Detailed Logs\nread-only preferred source" as Logs
+  component "Python exporter\nlegacy fallback" as Legacy
+  component "MTGA process memory\nlegacy read-only source" as Memory
+}
+
+cloud "Central platform" as Central {
+  component "HTTPS API\nGo, stateless" as API
+  component "Catalog worker" as CatalogWorker
+  component "Telemetry ingest\nopt-in, aggregate" as Telemetry
+  database "PostgreSQL\nmetadata and aggregate metrics" as ProdPG
+  storage "Object storage / CDN\nversioned catalog snapshots" as Objects
+  component "Authenticated operations" as Operations
+}
+
+cloud "Approved data providers" as Providers
+cloud "Optional model provider" as Model
+
+node "Development boundary - never shipped" as Development {
+  component "Development MCP\nstdio, read-only by default" as DevMCP
+  component "Contract, load and fault tests" as Tests
+  database "PostgreSQL\ndev / staging only" as DevPG
+  database "SQLite fixtures" as FixtureDB
+}
+
+Player --> Frontend
+Frontend --> Local : typed Wails bindings
+Local --> Frontend : progress and result events
+Local --> Logs : tail and parse
+Legacy --> Memory : compatibility scan
+Local ..> Legacy : explicit fallback
+Local <--> SQLite : local transactions
+Local --> API : HTTPS; manifest and opt-in batches
+Local --> Objects : catalog by version and hash
+Local ..> Model : minimal approved context
+Providers --> CatalogWorker : scheduled import
+CatalogWorker --> ProdPG : normalized metadata
+CatalogWorker --> Objects : immutable snapshot
+API --> Telemetry : validated event batches
+Telemetry --> ProdPG : aggregate writes
+Operations --> ProdPG : audited privileged access
+DevMCP --> DevPG : restricted development role
+DevMCP --> FixtureDB : inspect graph and event fixtures
+DevMCP --> API : dev/staging diagnostics only
+Tests --> Frontend
+Tests --> Local
+Tests --> API
+Tests --> DevPG
+
+note bottom of Device
+  Raw logs, collection contents and local paths stay on the device.
+  SQLite is the product source of truth; exports are projections.
+end note
+note bottom of Development
+  Reject production DSNs. No product packaging and no runtime dependency.
+end note
+@enduml

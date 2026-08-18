@@ -1,0 +1,61 @@
+@startuml mtga-central-go-backend
+title MTGA Central Go Platform - Components and Capacity Boundaries
+left to right direction
+skinparam componentStyle rectangle
+skinparam shadowing false
+
+actor "Desktop companion" as Desktop
+actor "Operations user" as Operator
+
+cloud "TLS ingress / CDN" as Edge
+node "Stateless API replicas" as APIGroup {
+  component "net/http API" as API
+  component "Admission and policy" as Admission
+  component "Manifest cache\nsmall and bounded" as Cache
+}
+node "Worker replicas" as WorkerGroup {
+  component "Job poller" as Poller
+  component "Bounded worker group" as Workers
+  component "Catalog pipeline" as Catalog
+  component "Telemetry aggregator" as Aggregator
+}
+database "PostgreSQL" as PG {
+  component "Catalog metadata" as CatalogDB
+  component "Consent and telemetry" as TelemetryDB
+  component "Jobs, outbox and audit" as JobsDB
+}
+storage "Object storage" as Objects
+cloud "Approved providers" as Providers
+component "External secret store" as Secrets
+
+Desktop --> Edge : HTTPS manifests and opt-in batches
+Operator --> Edge : OIDC operations
+Edge --> API
+API --> Admission
+Admission --> PG : pgxpool within replica budget
+API --> Cache
+Cache --> Objects : immutable artifacts
+Poller --> JobsDB : lease with SKIP LOCKED
+Poller --> Workers : bounded jobs
+Workers --> Catalog
+Workers --> Aggregator
+Catalog --> Providers : limited fetches
+Catalog --> CatalogDB : bounded batches
+Catalog --> Objects : hash, verify, sign, publish
+Aggregator --> TelemetryDB : idempotent aggregates
+APIGroup ..> Secrets : runtime references
+WorkerGroup ..> Secrets : signing and storage references
+
+note bottom of APIGroup
+  net/http already owns request goroutines.
+  No detached post-response work.
+end note
+note bottom of WorkerGroup
+  Context-owned goroutines, bounded channels,
+  deterministic reducers and graceful drain.
+end note
+note bottom of PG
+  Connection capacity sets API replicas,
+  worker count and admission limits.
+end note
+@enduml

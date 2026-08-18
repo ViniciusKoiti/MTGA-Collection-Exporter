@@ -1,0 +1,12 @@
+[100] [UnityCrossThreadLogger]==> StartHook {"id":"00000000-0000-4000-8000-000000000001","request":"{\"DeckSummariesCacheVersion\":0,\"DecksCacheVersion\":0,\"PreferredCosmeticsCacheVersion\":0,\"TokenDefinitionsCacheVersion\":0}"}
+[101] [UnityCrossThreadLogger]==> DeckGetDeckSummariesV3 {"id":"00000000-0000-4000-8000-000000000002"}
+[102] [UnityCrossThreadLogger]<== DeckGetDeckSummariesV3(00000000-0000-4000-8000-000000000002)
+[103] [UnityCrossThreadLogger]==> QuestGetQuests {"id":"00000000-0000-4000-8000-000000000003"}
+[104] [UnityCrossThreadLogger]<== QuestGetQuests(00000000-0000-4000-8000-000000000003)
+{"InventoryInfo":{"SeqId":1,"Changes":[],"Gems":100,"Gold":100,"TotalVaultProgress":100,"wcTrackPosition":1,"WildCardCommons":2,"WildCardRares":1,"WildCardMythics":1,"CustomTokens":{},"Boosters":[{"CollationId":100001,"SetCode":"TST","Count":1}],"Vouchers":{},"Cosmetics":{"ArtStyles":[{"Type":"ArtStyle","Id":"100001.DA","ArtId":100001,"Variant":"DA","ExplicitGrpIds":[]}]}}}
+[105] [UnityCrossThreadLogger]==> RankGetCombinedRankInfo {"id":"00000000-0000-4000-8000-000000000004"}
+[106] [UnityCrossThreadLogger]<== RankGetCombinedRankInfo(00000000-0000-4000-8000-000000000004)
+[107] [UnityCrossThreadLogger]==> PeriodicRewardsGetStatus {"id":"00000000-0000-4000-8000-000000000005"}
+[108] [UnityCrossThreadLogger]<== PeriodicRewardsGetStatus(00000000-0000-4000-8000-000000000005)
+[109] [UnityCrossThreadLogger]==> EventGetCoursesV2 {"id":"00000000-0000-4000-8000-000000000006"}
+[110] [UnityCrossThreadLogger]<== EventGetCoursesV2(00000000-0000-4000-8000-000000000006)
